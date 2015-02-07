@@ -6,6 +6,7 @@ from zhihu.Question import Question
 if __name__ == "__main__":
     s = Session()
     s.login()
-    q = Question(s, "http://www.zhihu.com/question/24269892")
-    t = q.get_title()
-    print t
+    q = Question(s, "http://www.zhihu.com/question/28033120")
+    print q.get_title()
+    print q.get_num_answers()
+    print q.get_description()

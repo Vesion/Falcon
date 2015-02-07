@@ -5,26 +5,32 @@ import json
 import ConfigParser
 
 class Session():
-    """ Used to initiate and maintain a request session """
+    """ Basic class used to initiate and maintain a request session """
     
     def __init__(self):
         self.__session = requests.session()
         self.__info = {}
-        self.__header = {}
         self.HasLogedIn = False
 
     def __parseConfig(self):
         cf = ConfigParser.ConfigParser()
         cf.read('config.ini')
         self.__info = dict(cf.items('info'))
-        self.__header = dict(cf.items('header'))
+        self.__session.headers = dict(cf.items('header'))
+
+    def updateConfig(self): # for debug
+        cf = ConfigParser.ConfigParser()
+        cf.read('config.ini')
+        for c in self.__session.cookies.items():
+            cf.set('cookies', c[0], c[1])
+        with open('config.ini', 'wb') as configfile:
+            cf.write(configfile)
 
     def login(self):
         self.__parseConfig()
         try:
             rsp = self.__session.post("http://www.zhihu.com/login", 
-                                      data = self.__info, 
-                                      headers = self.__header)
+                                      data = self.__info)
         except requests.exceptions.RequestException as e:
             print e.message()
             sys.exit(0)
@@ -32,6 +38,8 @@ class Session():
             if rsp.status_code == requests.codes.ok:# log in successfully
                 # print self.__session.cookies
                 self.HasLogedIn = True
+                print "Log in successfully."
+                self.updateConfig() # update cookies into config
             else:
                 print r.json()['msg']
 
