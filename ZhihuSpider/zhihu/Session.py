@@ -10,7 +10,7 @@ class Session():
     def __init__(self):
         self.__session = requests.session()
         self.__info = {}
-        self.HasLogedIn = False
+        #self.HasLogedIn = False
 
     def __parseConfig(self):
         cf = ConfigParser.ConfigParser()
@@ -37,7 +37,7 @@ class Session():
         else:
             if rsp.status_code == requests.codes.ok:# log in successfully
                 # print self.__session.cookies
-                self.HasLogedIn = True
+                #self.HasLogedIn = True
                 print "Log in successfully."
                 self.updateConfig() # update cookies into config
             else:

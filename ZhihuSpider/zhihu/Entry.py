@@ -9,11 +9,13 @@ import Session
 class Entry():
     """Base class for all entries from zhihu"""
 
-    def __init__(self, session, url):
-        self.__url = url
-        self.__session = session
-        self.__rsp = None
+    host = "http://www.zhihu.com"
 
+    def __init__(self, session, url):
+        self.__rsp = None
+        
+        self.session = session
+        self.url = url
         self.soup = None # protected member for specified use
 
         if self.__getContent():
@@ -24,7 +26,7 @@ class Entry():
 
     def __getContent(self):
         try:
-            self.__rsp = self.__session.get(self.__url)
+            self.__rsp = self.session.get(Entry.host + self.url)
         except requests.exceptions.RequestException as e:
             print e.message()
         else:
@@ -36,6 +38,9 @@ class Entry():
     
     def __parse(self):
         return BeautifulSoup(self.__rsp.content)
+
+    def get_id(self):
+        return self.url.split('/')[-1]
 
     def decode2Character(self, content): # protected en/de API
         if platform.system() == "Windows":
