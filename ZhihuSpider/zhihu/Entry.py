@@ -6,9 +6,6 @@ import requests
 from bs4 import BeautifulSoup
 import Session
 
-reload(sys)  
-sys.setdefaultencoding('utf8')
-
 class Entry():
     """Base class for all specified entries"""
 

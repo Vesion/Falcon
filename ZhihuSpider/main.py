@@ -1,8 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
-from zhihu.Question import Question
-from zhihu.Answer import Answer
-from zhihu.User import User
-from zhihu.Collection import Collection
+from zhihu.Zhihu import Question
+from zhihu.Zhihu import Answer
+from zhihu.Zhihu import User
+from zhihu.Zhihu import Collection
 
 
 def question_test(url):
