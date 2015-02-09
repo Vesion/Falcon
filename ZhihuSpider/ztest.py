@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 from zhihu.Session import Session
 from zhihu.Question import Question
 from zhihu.User import User
 from zhihu.Collection import Collection
+from zhihu.Answer import Answer
 
 if __name__ == "__main__":
     s = Session()
@@ -31,3 +32,7 @@ if __name__ == "__main__":
     print c.get_id()
     print c.get_title()
     print c.get_creator().get_name()
+
+    a = Answer(s, "/question/27967203/answer/38917501")
+    print a.get_id()
+    print a.get_author().get_name()

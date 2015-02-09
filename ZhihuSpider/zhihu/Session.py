@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 import requests
 import json
@@ -21,8 +21,8 @@ class Session():
     def updateConfig(self): # for debug
         cf = ConfigParser.ConfigParser()
         cf.read('config.ini')
-        for c in self.__session.cookies.items():
-            cf.set('cookies', c[0], c[1])
+        for ckey, cvalue in self.__session.cookies.items():
+            cf.set('cookies', ckey, cvalue)
         with open('config.ini', 'wb') as configfile:
             cf.write(configfile)
 
