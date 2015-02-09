@@ -10,21 +10,19 @@ class Session():
     def __init__(self):
         self.__session = requests.session()
         self.__info = {}
-        #self.HasLogedIn = False
+
+        self.__cf = ConfigParser.ConfigParser()
+        self.__cf.read('config.ini')
 
     def __parseConfig(self):
-        cf = ConfigParser.ConfigParser()
-        cf.read('config.ini')
-        self.__info = dict(cf.items('info'))
-        self.__session.headers = dict(cf.items('header'))
+        self.__info = dict(self.__cf.items('info'))
+        self.__session.headers = dict(self.__cf.items('header'))
 
     def updateConfig(self): # for debug
-        cf = ConfigParser.ConfigParser()
-        cf.read('config.ini')
         for ckey, cvalue in self.__session.cookies.items():
-            cf.set('cookies', ckey, cvalue)
+            self.__cf.set('cookies', ckey, cvalue)
         with open('config.ini', 'wb') as configfile:
-            cf.write(configfile)
+            self.__cf.write(configfile)
 
     def login(self):
         self.__parseConfig()
@@ -33,15 +31,26 @@ class Session():
                                       data = self.__info)
         except requests.exceptions.RequestException as e:
             print e.message()
-            sys.exit(0)
+            #sys.exit(0)
         else:
             if rsp.status_code == requests.codes.ok:# log in successfully
-                # print self.__session.cookies
-                #self.HasLogedIn = True
                 print "Log in successfully."
                 self.updateConfig() # update cookies into config
             else:
                 print r.json()['msg']
+
+    def logout(self):
+        try:
+            rsp = self.__session.get("http://www.zhihu.com/logout")
+        except requests.exceptions.RequestException as e:
+            print e.message()
+        else:
+            if rsp.status_code == requests.codes.ok:
+                print "Log out successfully."
+                print rsp.headers
+                self.updateConfig() # update cookies into config
+            else:
+                print rsp.status_code
 
     def get(self, url):
         return self.__session.get(url)

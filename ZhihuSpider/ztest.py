@@ -36,3 +36,7 @@ if __name__ == "__main__":
     a = Answer(s, "/question/27967203/answer/38917501")
     print a.get_id()
     print a.get_author().get_name()
+    print a.get_num_upvotes()
+    print a.get_num_comments()
+
+    s.logout()
