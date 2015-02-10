@@ -10,12 +10,13 @@ class Answer(Entry):
     def __init__(self, session, url):
         Entry.__init__(self, session, url)
 
+    # Note: This API may return None due to anonymous user
     def get_author(self):
         author = self.soup.find('div', id = 'js-sidebar-author-info')\
                             .find('h2', class_ = 'zm-list-content-title').a
         if author:
-            url = author['href'].split('/')[-1];
-            return User(self.session, '/people/'+url)
+            url = author['href'].split('/')[-1]
+            return User(self.session, "/people/{0}".format(url))
         else:
             return None # anonymous user
 

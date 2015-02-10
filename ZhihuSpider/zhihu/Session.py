@@ -27,33 +27,38 @@ class Session():
     def login(self):
         self.__parseConfig()
         try:
-            rsp = self.__session.post("http://www.zhihu.com/login", 
-                                      data = self.__info)
+            rsp = self.post("http://www.zhihu.com/login", 
+                        data = self.__info)
         except requests.exceptions.RequestException as e:
             print e.message()
-            #sys.exit(0)
         else:
             if rsp.status_code == requests.codes.ok:# log in successfully
                 print "Log in successfully."
                 self.updateConfig() # update cookies into config
+                return True
             else:
                 print r.json()['msg']
+        return False
 
     def logout(self):
         try:
-            rsp = self.__session.get("http://www.zhihu.com/logout")
+            rsp = self.get("http://www.zhihu.com/logout")
         except requests.exceptions.RequestException as e:
             print e.message()
         else:
             if rsp.status_code == requests.codes.ok:
                 print "Log out successfully."
-                print rsp.headers
                 self.updateConfig() # update cookies into config
+                return True
             else:
-                print rsp.status_code
+                print "Log out failed : {0}".format(rsp.status_code)
+        return False
 
     def get(self, url):
         return self.__session.get(url)
+
+    def post(self, url, data):
+        return self.__session.post(url, data)
         
 if __name__ == "__main__":
     s = Session()

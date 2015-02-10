@@ -26,9 +26,11 @@ class Entry():
 
         if self.__getContent():
             self.soup = self.__parse()
+            #with open("web.html", 'wb') as fff:
+            #    fff.write(self.soup.text.decode('utf-8').encode('gbk'))
+            #print self.decode2Character(self.soup.text.encode('utf-8').strip('\n'))
         else:
-            print "Get url failure!"
-            #sys.exit(0)
+            print "Get url failed!"
 
     def __getContent(self):
         try:
