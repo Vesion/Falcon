@@ -7,7 +7,16 @@ from bs4 import BeautifulSoup
 import Session
 
 class Entry():
-    """Base class for all specified entries"""
+    """
+    Base class for all specified entries.
+    Each entry is identified by a unique Eid, which is always a sequence of number
+    subed in url.
+    The only way to instantiate entry is getting by url.
+    NOTE:
+        All of get_** APIs in tool classes are NOT getting an entry,
+        but getting its url, for performance regrading.
+        (Use that url to manually get an entry instance)
+    """
 
     HOST = "http://www.zhihu.com"
 
@@ -26,9 +35,6 @@ class Entry():
 
         if self.__getContent():
             self.soup = self.__parse()
-            #with open("web.html", 'wb') as fff:
-            #    fff.write(self.soup.text.decode('utf-8').encode('gbk'))
-            #print self.decode2Character(self.soup.text.encode('utf-8').strip('\n'))
         else:
             print "Get url failed!"
 
@@ -51,7 +57,7 @@ class Entry():
         return self.Eid
 
     # encode/decode character tool API
-    def decode2Character(self, content):
+    def encode2Character(self, content):
         if platform.system() == "Windows":
             content = content.decode('utf-8').encode('gbk')
         return content

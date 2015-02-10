@@ -5,7 +5,13 @@ import json
 import ConfigParser
 
 class Session():
-    """ Basic class used to initiate and maintain a request session """
+    """ 
+    Basic class used to initiate and maintain a request session.
+    NOTE:
+        All of attrs are private for safe regarding.
+    API: login, logout
+        Wrapper: get, post
+    """
     
     def __init__(self):
         self.__session = requests.session()

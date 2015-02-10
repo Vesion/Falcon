@@ -37,6 +37,9 @@
     <Compile Include="zhihu\Session.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="zhihu\Topic.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="zhihu\User.py">
       <SubType>Code</SubType>
     </Compile>
