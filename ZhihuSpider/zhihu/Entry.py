@@ -11,14 +11,14 @@ class Entry():
     Base class for all specified entries.
     Each entry is identified by a unique Eid, which is always a sequence of number
     subed in url.
-    The only way to instantiate entry is getting by url.
+    The only way to instantiate an entry is getting by url.
     NOTE:
-        All of get_** APIs in tool classes are NOT getting an entry,
+        All of get_* APIs in tool classes are NOT getting an entry,
         but getting its url, for performance regrading.
-        (Use that url to manually get an entry instance)
+        (Use that url to manually get an entry instance in need)
     """
 
-    HOST = "http://www.zhihu.com"
+    __HOST_ = "http://www.zhihu.com"
 
     def __init__(self, session, url):
         self.__rsp = None
@@ -40,7 +40,7 @@ class Entry():
 
     def __getContent(self):
         try:
-            self.__rsp = self.session.get(Entry.HOST + self.url)
+            self.__rsp = self.session.get(Entry.__HOST_ + self.url)
         except requests.exceptions.RequestException as e:
             print e.message()
         else:

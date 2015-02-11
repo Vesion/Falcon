@@ -22,9 +22,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="zhihu\Answer.py">
       <SubType>Code</SubType>
     </Compile>
@@ -41,9 +38,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zhihu\User.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="zhihu\Zhihu.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="zhihu\Entry.py">
