@@ -34,18 +34,21 @@ class Entry():
             print "Get entry failed!"
 
     def __getContent(self):
+        # reset the referer of the header
+        self.session.setHeader(referer = self.session._HOST_ + self.url)
+
         try:
             rsp = self.session.get(Session._HOST_ + self.url)
         except requests.exceptions.RequestException as e:
             print e.message()
         else:
             if rsp.status_code == requests.codes.ok:
-                self.soup = self.__parse(rsp)
+                self.soup = self.getSoup(rsp.content)
                 return True
         return False
     
-    def __parse(self, rsp):
-        return BeautifulSoup(rsp.content)
+    def getSoup(self, content):
+        return BeautifulSoup(content)
 
     def get_id(self):
         return self.url.split('/')[-1]

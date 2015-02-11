@@ -11,16 +11,19 @@ if __name__ == "__main__":
     s = Session()
     if s.login():
 
-        q = Question(s, "/question/28033120")
+        q = Question(s, "/question/27936593")
         print q.get_id()
         print q.get_title()
         print q.get_num_answers()
         print q.get_description()
         ts = q.get_topics()
-        ans = q.get_answers()
-        for i in xrange(3):
-            print ans.next()
-            print ts.next()
+        #ans = q.get_answers()
+        #for i in xrange(0, q.get_num_answers()):
+        #    print "{0} : {1}".format(i+1, ans.next())
+        fs = q.get_followers()
+        for i in xrange(0, q.get_num_followers()):
+            print "{0} : {1}".format(i+1, fs.next())
+        #rqs = q.get_related_questions()
 
         #u = User(s, "/people/yue-shui")
         #print u.get_id()

@@ -10,7 +10,7 @@ class Session():
     NOTE:
         All of attrs are private for safe regarding.
     API: login, logout
-        Wrapper: get, post, setHeader
+        Wrapper: get, post, setHeader, getCookie
     """
     
     _HOST_ = "http://www.zhihu.com"
@@ -27,6 +27,9 @@ class Session():
     def setHeader(self, **headers):
         for key, value in headers.items():
             self.__session.headers[key] = value
+
+    def getCookie(self):
+        return self.__session.cookies
 
     def setConfig(self, section, **options): # for debug
         cf = self.getConfig()
@@ -54,7 +57,7 @@ class Session():
                 self.setConfig('cookie', **self.__session.cookies) # update cookies into config
                 return True
             else:
-                print r.json()['msg']
+                print rsp.json()['msg']
         return False
 
     def logout(self):

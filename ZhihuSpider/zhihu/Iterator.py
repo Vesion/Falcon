@@ -1,3 +1,6 @@
+
+### obsoleted! ###
+
 class Iterator:
     """
     Base class for specified iterator tool classes.
