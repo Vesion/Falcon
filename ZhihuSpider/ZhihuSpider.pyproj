@@ -28,6 +28,9 @@
     <Compile Include="zhihu\Collection.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="zhihu\Iterator.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="zhihu\Question.py">
       <SubType>Code</SubType>
     </Compile>

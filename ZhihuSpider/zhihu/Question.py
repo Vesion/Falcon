@@ -1,6 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 
 from Entry import Entry
+from Iterator import AIterator, TIterator
 
 class Question(Entry):
     """ Tool class for getting question info """
@@ -31,18 +32,20 @@ class Question(Entry):
 
     # generator for getting topics
     def get_topics(self):
-        topic = self.soup.find('a', class_ = 'zm-item-tag')
-        while topic:
-            url = topic['href']
-            yield url
-            topic = topic.find_next_sibling('a', class_ = 'zm-item-tag')
-        print "No more topics"
+        return TIterator(self)
+        #topic = self.soup.find('a', class_ = 'zm-item-tag')
+        #while topic:
+        #    url = topic['href']
+        #    yield url
+        #    topic = topic.find_next_sibling('a', class_ = 'zm-item-tag')
+        #print "No more topics"
 
     # generator for getting answers
     def get_answers(self):
-        answer = self.soup.find('div', class_ = 'zm-item-answer ')
-        while answer:
-            url = "/question/{0}/answer/{1}".format(self.Eid, answer['data-atoken'])
-            yield url
-            answer = answer.find_next_sibling('div', class_ = 'zm-item-answer ')
-        print "No more answers."
+        return AIterator(self)
+        #answer = self.soup.find('div', class_ = 'zm-item-answer ')
+        #while answer:
+        #    url = "/question/{0}/answer/{1}".format(self.Eid, answer['data-atoken'])
+        #    yield url
+        #    answer = answer.find_next_sibling('div', class_ = 'zm-item-answer ')
+        #print "No more answers."

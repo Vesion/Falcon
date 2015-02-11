@@ -1,11 +1,4 @@
-def yrange(n):
-    i = 0
-    while i < n:
-        yield i
-        i += 1
+def func(**k):
+	print k
 
-
-
-a = yrange(3)
-
-print type(a.next())
+func(**dict([('1', 2)]))
