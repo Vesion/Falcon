@@ -1,7 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 
-from Entry import Entry
 import re
+
+from .Entry import Entry
 
 class Answer(Entry):
     """ Tool class for getting answer info """
@@ -16,7 +17,7 @@ class Answer(Entry):
         if author:
             return author['href']
         else:
-            return "" # anonymous user
+            return None # anonymous user
 
     def get_num_upvotes(self):
         num = self.soup.find('span', class_ = 'count').string.encode('utf-8')

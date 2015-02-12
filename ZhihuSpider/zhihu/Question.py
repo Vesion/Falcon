@@ -1,14 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 
+import sys
 import requests
 import json
-from Entry import Entry
+
+from .Entry import Entry
 
 class Question(Entry):
     """ Tool class for getting question info """
 
-    PageSize = 50
-    FollowerSize = 20
+    AnswerSize = 50 # For answers page
+    FollowerSize = 20 # For followers page
 
     def __init__(self, session, url):
         Entry.__init__(self, session, url)
@@ -33,80 +35,69 @@ class Question(Entry):
         num = self.soup.find('div', class_ = 'zh-question-followers-sidebar')\
                         .div.a.strong.string.encode('utf-8')
         return int(num)
-
-    # generator section start #
-
+    
     def get_topics(self):
+        urls = []
         topic = self.soup.find('a', class_ = 'zm-item-tag')
         while topic:
             url = topic['href']
-            yield url
+            urls.append(url)
             topic = topic.find_next_sibling('a', class_ = 'zm-item-tag')
-        print "No more topics"
-
+        return urls
+        
     def get_related_questions(self):
+        urls = []
         question = self.soup.find('ul', itemprop = 'relatedQuestion').li
         while question:
             url = question.a['href']
-            yield url
+            urls.append(url)
             question = question.find_next_sibling('li')
-        print "No more related questions"
+        return urls
 
-    def _get_answer_list_v2(self, url, i):
-        """
-        Private API to use async post to get more answers.
-        i is the couter of posts, used to evaluate the offset.
-        Return a content list.
-        """
-        data = {
-            'method' : 'next',
-            'params' : json.dumps({
-                'url_token' : self.get_id(),
-                'pagesize' : Question.PageSize,
-                'offset' : Question.PageSize * i
-                }),
-            '_xsrf' : self.session.getCookie()['_xsrf']
-            }
-        rsp = self.session.post(url, data)
-        if rsp.status_code == requests.codes.ok:
-            return rsp.json()["msg"]
+    # generator section start #
 
     def get_answers(self):
+
+        """
+        The original page has `AnswerSize` answers at most for search.
+        Then use AJAX post to get `AnswerSize` answers each time until reach max.
+        """
         answer = None
         answer_list = []
         a_url = self.session._HOST_ + "/node/QuestionAnswerListV2"
+
         for i in xrange(self.get_num_answers()):
             if i == 0:
                 answer = self.soup.find('div', class_ = 'zm-item-answer ')
-            elif i < Question.PageSize:
+            elif i < Question.AnswerSize:
                 answer = answer.find_next_sibling('div', class_ = 'zm-item-answer ')
             else:
-                if not i % Question.PageSize:
-                    answer_list = self._get_answer_list_v2(a_url, i/Question.PageSize)
-                answer = self.getSoup(answer_list[i % Question.PageSize]).find('div')
-            url = "/question/{0}/answer/{1}".format(self.get_id(), answer['data-atoken'])
+                if not i % Question.AnswerSize:
+                    data = {
+                        'method' : 'next',
+                        'params' : json.dumps({
+                            'url_token' : self.get_id(),
+                            'pagesize' : Question.AnswerSize,
+                            'offset' : Question.AnswerSize * (i / Question.AnswerSize)
+                            }),
+                        '_xsrf' : self.session.getCookie()['_xsrf']
+                        }
+                    rsp = self.session.post(a_url, data)
+                    if rsp.status_code == requests.codes.ok:
+                        answer_list = rsp.json()["msg"]
+                answer = self.getSoup(answer_list[i % Question.AnswerSize]).find('div')
+            url = "/question/{0}/answer/{1}".format(self.getId(), answer['data-atoken'])
             yield url
         print "No more answers."
 
-
-    def _get_follower_content(self, url, i):
-        """
-        Private API to use async post to get more followers.
-        i is the couter of posts, used to evaluate the offset.
-        Return new HTML content.
-        """
-        data = {
-            'start' : 0,
-            'offset' : Question.FollowerSize * i,
-            '_xsrf' : self.session.getCookie()['_xsrf']
-            }
-        rsp = self.session.post(url, data)
-        if rsp.status_code == requests.codes.ok:
-            return rsp.json()["msg"][1]
-
     def get_followers(self):
-        soup = None
+        """
+        First get the follower page.
+        The original page has `FollowerSize` followers at most for search.
+        Then use AJAX post to get `FollowerSize` followers each time until reach max.
+        """
         follower = None
+        soup = None
         f_url = self.session._HOST_ + self.url + "/followers"
 
         rsp = self.session.get(f_url)
@@ -116,17 +107,33 @@ class Question(Entry):
         for i in xrange(self.get_num_followers()):
             if i == 0:
                 follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
-            elif i < Question.FollowerSize:
-                follower = follower.find_next_sibling('div')
             else:
                 if not i % Question.FollowerSize:
-                    content = self._get_follower_content(f_url, i/Question.FollowerSize)
-                    soup = self.getSoup(content)
-                    follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+                    data = {
+                        'start' : 0,
+                        'offset' : Question.FollowerSize * (i / Question.FollowerSize),
+                        '_xsrf' : self.session.getCookie()['_xsrf']
+                        }
+                    rsp = self.session.post(f_url, data)
+                    if rsp.status_code == requests.codes.ok:
+                        soup = self.getSoup(rsp.json()["msg"][1])
+                        follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
                 else:
                     follower = follower.find_next_sibling('div')
-            url = follower.find('a', class_ = 'zm-item-link-avatar')['href']
-            yield url
+            link = follower.find('a', class_ = 'zm-item-link-avatar')
+            if link:
+                url = link['href']
+                yield url
+            else:
+                yield None # anonymous user
         print "No more followers"
 
-    # get generator section end #
+    # generator section end #
+
+    def get_all_answers(self, limit = sys.maxsize):
+        ans = self.get_answers()
+        return [ans.next() for i in xrange(min(limit, self.get_num_answers()))]
+
+    def get_all_followers(self, limit = sys.maxsize):
+        fs = self.get_followers()
+        return [fs.next() for i in xrange(min(limit, self.get_num_followers()))]

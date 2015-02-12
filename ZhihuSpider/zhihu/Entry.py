@@ -4,7 +4,8 @@ import sys
 import platform
 import requests
 from bs4 import BeautifulSoup
-from Session import Session
+
+from .Session import Session
 
 class Entry():
     """
@@ -13,7 +14,7 @@ class Entry():
     the only way to instantiate an entry is getting by url.
     NOTE:
         All of get_* APIs in tool classes are NOT getting an entry,
-        but getting its url, for performance regrading.
+        but getting url/urllist/dict/generator, for performance regrading.
         (Use that Entry(session, url) to manually get an entry instance indeed)
     """
 
@@ -28,14 +29,14 @@ class Entry():
         # usually used to locate the web page
         self.url = url
 
-        if self.__getContent():
+        if self.getContent():
             print "Get entry content"
         else:
             print "Get entry failed!"
 
-    def __getContent(self):
+    def getContent(self):
         # reset the referer of the header
-        self.session.setHeader(referer = self.session._HOST_ + self.url)
+        #self.session.setHeader(referer = self.session._HOST_ + self.url)
 
         try:
             rsp = self.session.get(Session._HOST_ + self.url)
@@ -50,7 +51,7 @@ class Entry():
     def getSoup(self, content):
         return BeautifulSoup(content)
 
-    def get_id(self):
+    def getId(self):
         return self.url.split('/')[-1]
 
     # encode/decode character tool API
