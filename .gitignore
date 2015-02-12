@@ -45,7 +45,7 @@ Temporary Items
 # Visual Studio Solution and Project files
 *.pyproj
 *.sln
-*.suo
+*.v12.suo
 
 # Python cache files
 *.pyc
