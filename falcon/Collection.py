@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 
-from .Entry import Entry
+from Entry import Entry
 
 class Collection(Entry):
     """ Tool class for getting collection info """

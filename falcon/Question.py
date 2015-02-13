@@ -4,7 +4,7 @@ import sys
 import requests
 import json
 
-from .Entry import Entry
+from Entry import Entry
 
 class Question(Entry):
     """ Tool class for getting question info """

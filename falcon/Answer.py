@@ -2,7 +2,7 @@
 
 import re
 
-from .Entry import Entry
+from Entry import Entry
 
 class Answer(Entry):
     """ Tool class for getting answer info """

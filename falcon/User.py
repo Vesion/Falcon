@@ -4,7 +4,7 @@ import sys
 import requests
 import json
 
-from .Entry import Entry
+from Entry import Entry
 
 class User(Entry):
     """ Tool class for getting people info """

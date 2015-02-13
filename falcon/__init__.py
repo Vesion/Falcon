@@ -15,10 +15,10 @@ __copyright__ = 'Copyright 2015 Shine Xu'
 
 
 
-from .Session import Session
+from Session import Session
 
-from .Answer import Answer
-from .Question import Question
-from .Topic import Topic
-from .User import User
-from .Collection import Collection
+from Answer import Answer
+from Question import Question
+from Topic import Topic
+from User import User
+from Collection import Collection

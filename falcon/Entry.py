@@ -5,7 +5,7 @@ import platform
 import requests
 from bs4 import BeautifulSoup
 
-from .Session import Session
+from Session import Session
 
 class Entry():
     """
