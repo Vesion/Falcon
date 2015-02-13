@@ -14,7 +14,7 @@ class Entry():
     the only way to instantiate an entry is getting by url.
     NOTE:
         All of get_* APIs in tool classes are NOT getting an entry,
-        but getting url/urllist/dict/generator, for performance regrading.
+        but getting text/url/urllist/dict, for performance regrading.
         (Use that Entry(session, url) to manually get an entry instance indeed)
     """
 

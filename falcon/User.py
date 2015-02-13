@@ -20,6 +20,26 @@ class User(Entry):
                             .string.encode('utf-8').strip('\n')
         return self.encode2Character(name)
 
+    def get_biography(self):
+        bio = self.soup.find('span', class_ = 'bio')
+        if bio:
+            return bio['title']
+        return None
+
+    def get_about(self):
+        about = {
+            'location' : {}, 'business' : {},
+            'employment' : {}, 'position' : {},
+            'education' : {}, 'education-extra' : {}
+            }
+        text = self.soup.find('span', class_ = 'location item')
+        if text:
+            location['text'] = self.encode2Character(text.get_text().encode('utf-8').strip('\n'))
+            topic = text.find('a')
+            if topic:
+                location['topic'] = topic['href']
+        return location
+
     def get_num_followees(self):
         num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear')\
                         .find_all('a')[0].strong.string.encode('utf-8')

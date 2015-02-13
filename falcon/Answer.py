@@ -16,8 +16,7 @@ class Answer(Entry):
                             .find('h2', class_ = 'zm-list-content-title').a
         if author:
             return author['href']
-        else:
-            return None # anonymous user
+        return None # anonymous user
 
     def get_num_upvotes(self):
         num = self.soup.find('span', class_ = 'count').string.encode('utf-8')
