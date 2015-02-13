@@ -1,11 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 
-from Falcon.Session import Session
-from Falcon.Question import Question
-from Falcon.User import User
-from Falcon.Collection import Collection
-from Falcon.Answer import Answer
-from Falcon.Topic import Topic
+from falcon import Session, Answer, Question, User, Collection, Topic
 
 if __name__ == "__main__":
     s = Session()
@@ -45,6 +40,7 @@ if __name__ == "__main__":
         print a.get_author()
         print a.get_num_upvotes()
         print a.get_num_comments()
+        print a.get_text_content()
 
         t = Topic(s, "/topic/19562033")
         print t.getId()
