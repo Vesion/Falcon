@@ -1,11 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
-from zhihu.Session import Session
-from zhihu.Question import Question
-from zhihu.User import User
-from zhihu.Collection import Collection
-from zhihu.Answer import Answer
-from zhihu.Topic import Topic
+from Falcon.Session import Session
+from Falcon.Question import Question
+from Falcon.User import User
+from Falcon.Collection import Collection
+from Falcon.Answer import Answer
+from Falcon.Topic import Topic
 
 if __name__ == "__main__":
     s = Session()
