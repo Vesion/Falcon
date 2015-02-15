@@ -20,7 +20,7 @@ if __name__ == "__main__":
         print u.getId()
         print u.get_name()
         print u.get_biography()
-        print u.get_about()['location']['text']
+        print u.get_about()['education-extra']['text']
         print u.get_num_followers()
         print u.get_num_followees()
         print u.get_num_agrees()

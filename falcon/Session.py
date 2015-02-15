@@ -10,7 +10,7 @@ class Session():
     NOTE:
         All of attrs are private for safe regarding.
     API: login, logout
-        Wrapper: get, post, set/get[Header], set/get[Cookie]
+    Wrapper: get, post, set/get[Header], set/get[Cookie]
     """
     
     _HOST_ = "http://www.zhihu.com"

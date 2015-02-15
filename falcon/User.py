@@ -15,56 +15,72 @@ class User(Entry):
         Entry.__init__(self, session, url)
 
     def get_name(self):
+        """ Return user name text. """
         name = self.soup.find('div', class_ = 'title-section ellipsis')\
                             .find('span', class_ = 'name')\
                             .string.encode('utf-8').strip('\n')
         return self.encode2Character(name)
 
     def get_biography(self):
+        """ Return user biography text or None. """
         bio = self.soup.find('span', class_ = 'bio')
         if bio:
             return bio['title']
         return None
 
-    def get_about(self):
-        about = {
-            'location' : {}, 'business' : {},
-            'employment' : {}, 'position' : {},
-            'education' : {}, 'education-extra' : {}
-            }
-        text = self.soup.find('span', class_ = 'location item')
+    def get_about_item(self, name):
+        """ Return user about item dictionatry, including name text and topic url. """
+        item = {}
+        text = self.soup.find('span', class_  = name + ' item')
         if text:
-            location['text'] = self.encode2Character(text.get_text().encode('utf-8').strip('\n'))
+            item['text'] = text['title']
             topic = text.find('a')
             if topic:
-                location['topic'] = topic['href']
-        return location
+                item['topic'] = topic['href']
+        return item
+
+    def get_about(self):
+        """ Return all user about dictionaries. """
+        about = {}
+        about['location'] = self.get_about_item('location')
+        about['business'] = self.get_about_item('business')
+        about['employment'] = self.get_about_item('employment')
+        about['position'] = self.get_about_item('position')
+        about['education'] = self.get_about_item('education')
+        about['education-extra'] = self.get_about_item('education-extra')
+        return about
 
     def get_num_followees(self):
+        """ Return number of followees int. """
         num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear')\
                         .find_all('a')[0].strong.string.encode('utf-8')
         return int(num)
 
     def get_num_followers(self):
+        """ Return number of followers int. """
         num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear')\
                         .find_all('a')[1].strong.string.encode('utf-8')
         return int(num)
 
     def get_num_agrees(self):
+        """ Return number of agrees int. """
         num = self.soup.find('span', class_ = 'zm-profile-header-user-agree')\
                         .strong.string.encode('utf-8')
         return int(num)
 
     def get_num_thanks(self):
+        """ Return number of thanks int. """
         num = self.soup.find('span', class_ = 'zm-profile-header-user-thanks')\
                         .strong.string.encode('utf-8')
         return int(num)
 
     def get_num_asks(self):
+        """ Return number of asks int. """
         num = self.soup.find_all("span", class_ = "num")[0].string.encode('utf-8')
         return int(num)
 
     def get_num_answers(self):
+        """ Return number of answers int. """
         num = self.soup.find_all("span", class_ = "num")[1].string.encode('utf-8')
         return int(num)
 
@@ -201,17 +217,21 @@ class User(Entry):
     # generator section end #
 
     def get_all_answers(self, limit = sys.maxsize):
+        """ Return limit/all answers url list"""
         ans = self.get_answers()
         return [ans.next() for i in xrange(min(limit, self.get_num_answers()))]
 
     def get_all_asks(self, limit = sys.maxsize):
+        """ Return limit/all asks url list"""
         asks = self.get_asks()
         return [asks.next() for i in xrange(min(limit, self.get_num_asks()))]
 
     def get_all_followees(self, limit = sys.maxsize):
+        """ Return limit/all followees url list"""
         fles = self.get_followees()
         return [fles.next() for i in xrange(min(limit, self.get_num_followees()))]
     
     def get_all_followers(self, limit = sys.maxsize):
+        """ Return limit/all followers url list"""
         flrs = self.get_followers()
         return [flrs.next() for i in xrange(min(limit, self.get_num_followers()))]

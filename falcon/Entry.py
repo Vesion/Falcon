@@ -16,6 +16,8 @@ class Entry():
         All of get_* APIs in tool classes are NOT getting an entry,
         but getting text/url/urllist/dict, for performance regrading.
         (Use that Entry(session, url) to manually get an entry instance indeed)
+    API: encode2Character
+    Wrapper: getContent, getSoup, getId
     """
 
     def __init__(self, session, url):
@@ -29,24 +31,20 @@ class Entry():
         # usually used to locate the web page
         self.url = url
 
-        if self.getContent():
-            print "Get entry content"
-        else:
-            print "Get entry failed!"
+        self.soup = self.getSoup(self.getContent(Session._HOST_ + self.url))
 
-    def getContent(self):
+    def getContent(self, url):
         # reset the referer of the header
         #self.session.setHeader(referer = self.session._HOST_ + self.url)
 
         try:
-            rsp = self.session.get(Session._HOST_ + self.url)
+            rsp = self.session.get(url)
         except requests.exceptions.RequestException as e:
             print e.message()
         else:
             if rsp.status_code == requests.codes.ok:
-                self.soup = self.getSoup(rsp.content)
-                return True
-        return False
+                return rsp.content
+        return None
     
     def getSoup(self, content):
         return BeautifulSoup(content)
