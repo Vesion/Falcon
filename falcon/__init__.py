@@ -22,3 +22,4 @@ from Question import Question
 from Topic import Topic
 from User import User
 from Collection import Collection
+from Column import Column

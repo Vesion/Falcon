@@ -29,7 +29,7 @@ class User(Entry):
         return None
 
     def get_about_item(self, name):
-        """ Return user about item dictionatry, including name text and topic url. """
+        """ Return user about item dictionary, including name text and topic url. """
         item = {}
         text = self.soup.find('span', class_  = name + ' item')
         if text:
@@ -40,7 +40,9 @@ class User(Entry):
         return item
 
     def get_about(self):
-        """ Return all user about dictionaries. """
+        """ Return all user abouts in dictionary, including of
+            'location', 'business', 'employment', 'position', 'education', 'education-extra',
+            each has text and href."""
         about = {}
         about['location'] = self.get_about_item('location')
         about['business'] = self.get_about_item('business')

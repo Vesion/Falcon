@@ -9,9 +9,9 @@ class Collection(Entry):
         Entry.__init__(self, session, url)
 
     def get_title(self):
-        name = self.soup.find('h2', id = 'zh-fav-head-title')\
+        title = self.soup.find('h2', id = 'zh-fav-head-title')\
                         .string.encode('utf-8').strip('\n')
-        return self.encode2Character(name)
+        return self.encode2Character(title)
 
     def get_creator(self):
         return self.soup.find('h2', class_ = 'zm-list-content-title')\

@@ -62,7 +62,7 @@ class Session():
         else:
             if rsp.status_code == requests.codes.ok:
                 print "Log in successfully."
-                self.setConfig('cookie', **self.__session.cookies) # update cookies into config
+                self.setConfig('cookie', **self.__session.cookies)
                 return True
             else:
                 print rsp.json()['msg']
@@ -76,7 +76,7 @@ class Session():
         else:
             if rsp.status_code == requests.codes.ok:
                 print "Log out successfully."
-                self.setConfig('cookie', **self.__session.cookies) # update cookies into config
+                self.setConfig('cookie', **self.__session.cookies)
                 return True
             else:
                 print "Log out failed : {0}".format(rsp.status_code)

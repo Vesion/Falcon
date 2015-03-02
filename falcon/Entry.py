@@ -22,7 +22,7 @@ class Entry():
 
     def __init__(self, session, url):
 
-        # protected member for specified use
+        # protected member for specific use
         self.session = session
         self.soup = None
 
@@ -34,9 +34,6 @@ class Entry():
         self.soup = self.getSoup(self.getContent(Session._HOST_ + self.url))
 
     def getContent(self, url):
-        # reset the referer of the header
-        #self.session.setHeader(referer = self.session._HOST_ + self.url)
-
         try:
             rsp = self.session.get(url)
         except requests.exceptions.RequestException as e:
