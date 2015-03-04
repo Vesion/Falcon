@@ -4,16 +4,19 @@ import re
 
 from Entry import Entry
 
+import requests
+from bs4 import BeautifulSoup
+
 class Column(Entry):
     """ Tool class for getting column info """
 
     _cHOST_ = "http://zhuanlan.zhihu.com/"
 
     def __init__(self, session, url):
-        self.session = session
+        self.session = requests.session()
         self.url = url
 
-        self.soup = self.getSoup(self.getContent(Column._cHOST_ + self.url))
+        self.soup = BeautifulSoup(self.session.get(Column._cHOST_ + self.url).content)
 
     def get_title(self):
         title = self.soup.find('div', class_ = 'title ng-binding')\

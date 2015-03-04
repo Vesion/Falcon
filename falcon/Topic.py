@@ -18,3 +18,4 @@ class Topic(Entry):
                                 .find('div', class_ = 'zm-editable-content').get_text()\
                                 .encode('utf-8').strip('\n')
         return self.encode2Character(description)
+        

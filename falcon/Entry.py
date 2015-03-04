@@ -54,3 +54,4 @@ class Entry():
         if platform.system() == "Windows":
             content = content.decode('utf-8').encode('gbk')
         return content
+        

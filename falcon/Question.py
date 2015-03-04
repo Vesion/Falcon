@@ -144,3 +144,4 @@ class Question(Entry):
         """ Return limit/all followers url list"""
         fs = self.get_followers()
         return [fs.next() for i in xrange(min(limit, self.get_num_followers()))]
+        

@@ -237,3 +237,4 @@ class User(Entry):
         """ Return limit/all followers url list"""
         flrs = self.get_followers()
         return [flrs.next() for i in xrange(min(limit, self.get_num_followers()))]
+        
