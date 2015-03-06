@@ -4,80 +4,80 @@ More APIs being updated.
 
 <h2>API reference</h2>
 
-<h3>Session:</h3>
+<h3>Session</h3>
 
 login()
 
 logout()
 
 
-<h3>Question:</h3>
+<h3>Question</h3>
 
-get_title(self):
+get_title()
 
-get_description(self):
+get_description()
 
-get_num_answers(self):
+get_num_answers()
 
-get_num_followers(self):
+get_num_followers()
 
-get_topics(self):
+get_topics()
 
-get_related_questions(self):
+get_related_questions()
 
-get_answers(self):
+get_answers()
 
-get_followers(self):
+get_followers()
 
-get_all_answers(self, limit = sys.maxsize):
+get_all_answers(limit = sys.maxsize)
 
-get_all_followers(self, limit = sys.maxsize):
-
-
-
-<h3>User:</h3>
-
-get_name(self):
-
-get_biography(self):
-
-get_about_item(self, name):
-
-get_about(self):
-
-get_num_followees(self):
-
-get_num_followers(self):
-
-get_num_agrees(self):
-
-get_num_thanks(self):
-
-get_num_asks(self):
-
-get_num_answers(self):
-
-get_num_column_papers(self):
-
-get_answers(self):
-
-get_asks(self):
-
-get_followees(self):
-
-get_followers(self):
-
-get_all_answers(self, limit = sys.maxsize):
-
-get_all_asks(self, limit = sys.maxsize):
-
-get_all_followees(self, limit = sys.maxsize):
-
-get_all_followers(self, limit = sys.maxsize):
+get_all_followers(limit = sys.maxsize)
 
 
 
-<h3>Collection:</h3>
+<h3>User</h3>
+
+get_name()
+
+get_biography()
+
+get_about_item(, name)
+
+get_about()
+
+get_num_followees()
+
+get_num_followers()
+
+get_num_agrees()
+
+get_num_thanks()
+
+get_num_asks()
+
+get_num_answers()
+
+get_num_column_papers()
+
+get_answers()
+
+get_asks()
+
+get_followees()
+
+get_followers()
+
+get_all_answers(limit = sys.maxsize)
+
+get_all_asks(limit = sys.maxsize)
+
+get_all_followees(limit = sys.maxsize)
+
+get_all_followers(limit = sys.maxsize)
+
+
+
+<h3>Collection</h3>
 
 get_title()
 
@@ -85,17 +85,21 @@ get_creator()
 
 
 
-<h3>Answer:</h3>
+<h3>Answer</h3>
 
 get_author()
 
 get_num_upvotes()
 
-get_text_content_text()
+get_num_comments()
+
+get_num_collects()
+
+get_content_text()
 
 
 
-<h3>Topic:</h3>
+<h3>Topic</h3>
 
 get_num_followers()
 

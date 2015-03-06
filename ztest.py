@@ -43,6 +43,7 @@ if __name__ == "__main__":
         print a.get_author()
         print a.get_num_upvotes()
         print a.get_num_comments()
+        print a.get_num_collects()
         print a.get_text_content()
 
         t = Topic(s, "/topic/19562033")
