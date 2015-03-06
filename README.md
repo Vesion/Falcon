@@ -13,57 +13,71 @@ logout()
 
 <h3>Question:</h3>
 
-getId()
+get_title(self):
 
-get_title()
+get_description(self):
 
-get_description()
+get_num_answers(self):
 
-get_num_answers()
+get_num_followers(self):
 
-get_num_followers()
+get_topics(self):
 
-get_topics()
+get_related_questions(self):
 
-get_related_questions()
+get_answers(self):
 
-get_all_answers(limit = sys.maxsize)
+get_followers(self):
 
-get_all_followers(limit = sys.maxsize)
+get_all_answers(self, limit = sys.maxsize):
+
+get_all_followers(self, limit = sys.maxsize):
 
 
 
 <h3>User:</h3>
 
-getId()
+get_name(self):
 
-get_name()
+get_biography(self):
 
-get_num_followers()
+get_about_item(self, name):
 
-get_num_followees()
+get_about(self):
 
-get_num_agrees()
+get_num_followees(self):
 
-get_num_answers()
+get_num_followers(self):
 
-get_num_asks()
+get_num_agrees(self):
 
-get_num_thanks()
+get_num_thanks(self):
 
-get_all_answers(limit = sys.maxsize)
+get_num_asks(self):
 
-get_all_asks(limit = sys.maxsize)
+get_num_answers(self):
 
-get_all_followees(limit = sys.maxsize)
+get_num_column_papers(self):
 
-get_all_followers(limit = sys.maxsize)
+get_answers(self):
+
+get_asks(self):
+
+get_followees(self):
+
+get_followers(self):
+
+get_all_answers(self, limit = sys.maxsize):
+
+get_all_asks(self, limit = sys.maxsize):
+
+get_all_followees(self, limit = sys.maxsize):
+
+get_all_followers(self, limit = sys.maxsize):
 
 
 
 <h3>Collection:</h3>
-
-getId()
 
 get_title()
 
@@ -73,19 +87,15 @@ get_creator()
 
 <h3>Answer:</h3>
 
-getId()
-
 get_author()
 
 get_num_upvotes()
 
-get_num_comments()
+get_text_content_text()
 
 
 
 <h3>Topic:</h3>
-
-getId()
 
 get_num_followers()
 

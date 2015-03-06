@@ -34,7 +34,7 @@ class Answer(Entry):
             return int(num.group(0))
         return 0
 
-    def get_text_content(self):
+    def get_text_content_text(self):
         text = self.soup.find('div', class_ = ' zm-editable-content clearfix')\
                         .get_text().encode('utf-8').strip('\n')
         return self.encode2Character(text)

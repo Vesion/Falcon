@@ -86,6 +86,11 @@ class User(Entry):
         num = self.soup.find_all("span", class_ = "num")[1].string.encode('utf-8')
         return int(num)
 
+    def get_num_column_papers(self):
+        """ Return number of column papers int. """
+        num = self.soup.find_all("span", class_ = "num")[2].string.encode('utf-8')
+        return int(num)
+
     # generator section start #
 
     def get_answers(self):

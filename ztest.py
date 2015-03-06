@@ -27,6 +27,7 @@ if __name__ == "__main__":
         print u.get_num_answers()
         print u.get_num_asks()
         print u.get_num_thanks()
+        print u.get_num_column_papers()
         print u.get_all_answers(limit = 21)
         print u.get_all_asks(limit = 21)
         print u.get_all_followees(limit = 21)
