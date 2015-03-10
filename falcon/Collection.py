@@ -10,7 +10,7 @@ class Collection(Entry):
 
     def get_title(self):
         title = self.soup.find('h2', id = 'zh-fav-head-title')\
-                        .string.encode('utf-8').strip('\n')
+                        .get_text(strip = True).encode('utf-8')
         return self.encode2Character(title)
 
     def get_creator(self):

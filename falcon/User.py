@@ -16,16 +16,15 @@ class User(Entry):
 
     def get_name(self):
         """ Return user name text. """
-        name = self.soup.find('div', class_ = 'title-section ellipsis')\
-                            .find('span', class_ = 'name')\
-                            .string.encode('utf-8').strip('\n')
+        name = self.soup.find('div', class_ = 'title-section ellipsis').find('span', class_ = 'name')\
+                        .get_text(strip = True).encode('utf-8')
         return self.encode2Character(name)
 
     def get_biography(self):
         """ Return user biography text or None. """
         bio = self.soup.find('span', class_ = 'bio')
         if bio:
-            return bio['title']
+            return self.encode2Character(bio.get_text(strip = True).encode('utf-8'))
         return None
 
     def get_about_item(self, name):
@@ -33,16 +32,18 @@ class User(Entry):
         item = {}
         text = self.soup.find('span', class_  = name + ' item')
         if text:
-            item['text'] = text['title']
+            item['text'] = self.encode2Character(text.get_text(strip = True).encode('utf-8'))
             topic = text.find('a')
             if topic:
                 item['topic'] = topic['href']
         return item
 
     def get_about(self):
-        """ Return all user abouts in dictionary, including of
-            'location', 'business', 'employment', 'position', 'education', 'education-extra',
-            each has text and href."""
+        """
+        Return all user abouts in dictionary, including of
+        'location', 'business', 'employment', 'position', 'education', 'education-extra',
+        each has text and href.
+        """
         about = {}
         about['location'] = self.get_about_item('location')
         about['business'] = self.get_about_item('business')
@@ -54,41 +55,44 @@ class User(Entry):
 
     def get_num_followees(self):
         """ Return number of followees int. """
-        num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear')\
-                        .find_all('a')[0].strong.string.encode('utf-8')
+        num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[0].strong\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_num_followers(self):
         """ Return number of followers int. """
-        num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear')\
-                        .find_all('a')[1].strong.string.encode('utf-8')
+        num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[1].strong\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_num_agrees(self):
         """ Return number of agrees int. """
-        num = self.soup.find('span', class_ = 'zm-profile-header-user-agree')\
-                        .strong.string.encode('utf-8')
+        num = self.soup.find('span', class_ = 'zm-profile-header-user-agree').strong\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_num_thanks(self):
         """ Return number of thanks int. """
-        num = self.soup.find('span', class_ = 'zm-profile-header-user-thanks')\
-                        .strong.string.encode('utf-8')
+        num = self.soup.find('span', class_ = 'zm-profile-header-user-thanks').strong\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_num_asks(self):
         """ Return number of asks int. """
-        num = self.soup.find_all("span", class_ = "num")[0].string.encode('utf-8')
+        num = self.soup.find_all("span", class_ = "num")[0]\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_num_answers(self):
         """ Return number of answers int. """
-        num = self.soup.find_all("span", class_ = "num")[1].string.encode('utf-8')
+        num = self.soup.find_all("span", class_ = "num")[1]\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_num_column_papers(self):
         """ Return number of column papers int. """
-        num = self.soup.find_all("span", class_ = "num")[2].string.encode('utf-8')
+        num = self.soup.find_all("span", class_ = "num")[2]\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     # generator section start #
@@ -224,22 +228,22 @@ class User(Entry):
     # generator section end #
 
     def get_all_answers(self, limit = sys.maxsize):
-        """ Return limit/all answers url list"""
+        """ Return limit/all answers url list. """
         ans = self.get_answers()
         return [ans.next() for i in xrange(min(limit, self.get_num_answers()))]
 
     def get_all_asks(self, limit = sys.maxsize):
-        """ Return limit/all asks url list"""
+        """ Return limit/all asks url list. """
         asks = self.get_asks()
         return [asks.next() for i in xrange(min(limit, self.get_num_asks()))]
 
     def get_all_followees(self, limit = sys.maxsize):
-        """ Return limit/all followees url list"""
+        """ Return limit/all followees url list. """
         fles = self.get_followees()
         return [fles.next() for i in xrange(min(limit, self.get_num_followees()))]
     
     def get_all_followers(self, limit = sys.maxsize):
-        """ Return limit/all followers url list"""
+        """ Return limit/all followers url list. """
         flrs = self.get_followers()
         return [flrs.next() for i in xrange(min(limit, self.get_num_followers()))]
         

@@ -19,7 +19,7 @@ class Answer(Entry):
         return None # anonymous user
 
     def get_num_upvotes(self):
-        num = self.soup.find('span', class_ = 'count').string.encode('utf-8')
+        num = self.soup.find('span', class_ = 'count').get_text(strip = True).encode('utf-8')
         if num[-1] == "K":
             return int(num[:-1]) * 1000
         elif num[-1] == "W":
@@ -28,7 +28,7 @@ class Answer(Entry):
 
     def get_num_comments(self):
         num = self.soup.find('a', class_ = ' meta-item toggle-comment')\
-                        .get_text().encode('utf-8')
+                        .get_text(strip = True).encode('utf-8')
         num = re.search('\d+', num)
         if num:
             return int(num.group(0))
@@ -37,10 +37,10 @@ class Answer(Entry):
     def get_num_collects(self):
         num = self.soup.find('a', href = self.url + '/collections');
         if num:
-            return num.string
+            return num.get_text(strip = True).encode('utf-8')
         return 0
 
     def get_text_content(self):
         text = self.soup.find('div', class_ = ' zm-editable-content clearfix')\
-                        .get_text().encode('utf-8').strip('\n')
+                        .get_text(strip = 'utf-8').encode('utf-8')
         return self.encode2Character(text)

@@ -9,13 +9,13 @@ class Topic(Entry):
         Entry.__init__(self, session, url)
 
     def get_num_followers(self):
-        num = self.soup.find('div', class_ = 'zm-topic-side-followers-info')\
-                        .a.strong.string.encode('utf-8')
+        num = self.soup.find('div', class_ = 'zm-topic-side-followers-info').a\
+                        .get_text(strip = True).encode('utf-8')
         return int(num)
 
     def get_description(self):
         description = self.soup.find('div', id = 'zh-topic-desc')\
-                                .find('div', class_ = 'zm-editable-content').get_text()\
-                                .encode('utf-8').strip('\n')
+                                .find('div', class_ = 'zm-editable-content')\
+                                .get_text(strip = True).encode('utf-8')
         return self.encode2Character(description)
         
