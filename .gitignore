@@ -49,3 +49,6 @@ Temporary Items
 
 # Python cache files
 *.pyc
+
+# Log files
+*.log
