@@ -18,7 +18,7 @@ Next _generation_ of Zhihu spider
 * get_answers()
 * get_followers()
 * get_all_answers(limit = sys.maxsize)
-* get_all_followers(limit = sys.maxsize
+* get_all_followers(limit = sys.maxsize)
 
 ### User
 * get_name()
@@ -38,7 +38,7 @@ Next _generation_ of Zhihu spider
 * get_all_answers(limit = sys.maxsize)
 * get_all_asks(limit = sys.maxsize)
 * get_all_followees(limit = sys.maxsize)
-* get_all_followers(limit = sys.maxsize
+* get_all_followers(limit = sys.maxsize)
 
 ### Collection
 * get_title()
