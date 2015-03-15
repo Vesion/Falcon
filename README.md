@@ -23,7 +23,6 @@ Next _generation_ of Zhihu spider
 ### User
 * get_name()
 * get_biography()
-* get_about_item(, name)
 * get_about()
 * get_num_followees()
 * get_num_followers()
