@@ -17,6 +17,7 @@ __copyright__ = 'Copyright 2015 Shine Xu'
 
 from Session import Session
 
+from Home import Home
 from Answer import Answer
 from Question import Question
 from Topic import Topic

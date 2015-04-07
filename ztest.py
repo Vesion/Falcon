@@ -1,10 +1,13 @@
 ﻿# -*- coding: utf-8 -*-
 
-from falcon import Session, Answer, Question, User, Collection, Topic, Column
+from falcon import Session, Home, Answer, Question, User, Collection, Topic, Column
 
 if __name__ == "__main__":
     s = Session()
     if s.login():
+
+        i = Home(s)
+        print i.get_all_following_questions(limit = 22)
 
         q = Question(s, "/question/27936593")
         print q.getId()
@@ -17,7 +20,7 @@ if __name__ == "__main__":
         print q.get_all_followers(limit = 21)
         print ''
 
-        u = User(s, "/people/wonderful-vczh")
+        u = User(s, "/people/fu-er")
         print u.getId()
         print u.get_name()
         print u.get_biography()
@@ -56,8 +59,5 @@ if __name__ == "__main__":
         print t.get_description()
         print ''
 
-        # co = Column(s, "/vczh-nichijou")
-        # print co.getId()
-        # print co.get_title()
 
     s.logout()

@@ -20,7 +20,7 @@ class Entry():
     Wrapper: getContent, getSoup, getId
     """
 
-    def __init__(self, session, url):
+    def __init__(self, session, url = ''):
 
         # protected member for specific use
         self.session = session
