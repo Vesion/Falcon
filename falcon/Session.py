@@ -1,7 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 
 import requests
-import json
 import ConfigParser
 
 class Session():
@@ -55,17 +54,17 @@ class Session():
         user_info = dict(self.getConfig().items('info'))
 
         try:
-            rsp = self.post(Session._HOST_ + "/login", 
+            rsp = self.post(Session._HOST_ + "/login/email", 
                         data = user_info)
         except requests.exceptions.RequestException as e:
             print e.message()
         else:
             if rsp.status_code == requests.codes.ok:
-                print "Log in successfully."
+                print "Login successfully."
                 self.setConfig('cookie', **self.__session.cookies)
                 return True
             else:
-                print rsp.json()['msg']
+                print "Login error: " + str(rsp.status_code)
         return False
 
     def logout(self):
