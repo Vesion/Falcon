@@ -1,18 +1,19 @@
-﻿# -*- coding: utf-8 -*-
+﻿#  ________      ______                   
+#  ___  __/_____ ___  /__________________ 
+#  __  /_ _  __ `/_  /_  ___/  __ \_  __ \
+#  _  __/ / /_/ /_  / / /__ / /_/ /  / / /
+#  /_/    \__,_/ /_/  \___/ \____//_/ /_/ 
+#                              
+# Author : Shine Xu
+# License: The MIT License (MIT)
 
-"""
-A handful tool for playing with zhihu.com
-
-:copyright: (c) 2015 by Shine Xu.
-:license: The MIT License (MIT), see LICENSE for more details.
-"""
+# -*- coding: utf-8 -*-
 
 __title__ = 'falcon'
 __version__ = '2.0.1'
 __author__ = 'Shine Xu'
 __license__ = 'The MIT License (MIT)'
 __copyright__ = 'Copyright 2015 Shine Xu'
-
 
 
 from Session import Session
