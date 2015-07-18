@@ -52,3 +52,6 @@ Temporary Items
 
 # Log files
 *.log
+
+# config files
+*.ini

@@ -10,6 +10,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
+import json
 import ConfigParser
 
 class Session():
@@ -70,8 +71,11 @@ class Session():
             print e.message()
         else:
             if rsp.status_code == requests.codes.ok:
-                print "Login successfully."
-                self.setConfig('cookie', self.__session.cookies)
+                if not rsp.json()['errcode']:
+                    print "Login successfully."
+                    self.setConfig('cookie', self.__session.cookies)
+                else:
+                    print "Login failed with response errcode: {0}".format(rsp.json()['errcode'])
                 return True
             else:
                 print "Login failed: {0}".format(rsp.status_code)
