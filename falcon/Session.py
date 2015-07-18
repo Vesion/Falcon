@@ -52,6 +52,7 @@ class Session():
     def login(self):
         self.setHeader(**dict(self.getConfig().items('header')))
         user_info = dict(self.getConfig().items('info'))
+        user_info['_xsrf'] = self.getCookie()['_xsrf']
 
         try:
             rsp = self.post(Session._HOST_ + "/login/email", 
