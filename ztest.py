@@ -4,10 +4,16 @@ from falcon import Session, Entry, Home, Answer, Question, User, Collection, Top
 
 if __name__ == "__main__":
     s = Session()
-    if s.login():
 
-        e = Entry(s)
-        print e.soup()
+    e = Entry(s)
+    #print e.soup
+
+    s.login()
+    s.logout()
+
+    #if s.login():
+
+        #e = Entry(s)
 
         #i = Home(s)
         #print i.get_all_following_questions(limit = 22)
@@ -62,5 +68,6 @@ if __name__ == "__main__":
         #print t.get_description()
         #print ''
 
+        #pass
 
-    s.logout()
+    #s.logout()
