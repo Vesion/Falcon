@@ -56,3 +56,6 @@ Temporary Items
 
 # config files
 *.ini
+
+# captcha files
+*.gif

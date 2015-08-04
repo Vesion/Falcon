@@ -11,6 +11,8 @@
 
 import requests
 import json
+import time
+import shutil
 import ConfigParser
 
 class Session():
@@ -56,44 +58,47 @@ class Session():
 
     def post(self, url, data = {}):
         return self.__session.post(url, data = data)
+    
+    def get_captcha(self):
+        params = {'r' : str(int(time.time() * 1000))}
+        rsp = self.__session.get(Session._HOST_ + '/captcha.gif', params = params, stream = True)
+        if rsp.status_code == 200:
+            with open('captcha.gif', 'wb') as f:
+                rsp.raw.decode_content = True
+                shutil.copyfileobj(rsp.raw, f)
+
+    def login_post(self, data):
+        rsp = self.post(Session._HOST_ + "/login/email", data = data)
+        return rsp.json()['r'], rsp.json()['msg']
 
     def login(self):
         self.setHeader(dict(self.__config.items('header')))
+        self.setCookie(dict(self.__config.items('cookie')))
+        data = {
+                'email'       : self.__config.get('info', 'email'),
+                'password'    : self.__config.get('info', 'password'),
+                'remember_me' : 'true'
+            }
 
-        try:
-            rsp = self.post(Session._HOST_ + "/login/email", 
-                        data = {
-                            'email'    : self.__config.get('info', 'email'),
-                            'password' : self.__config.get('info', 'password'),
-                            '_xsrf'    : self.__config.get('cookie', '_xsrf')
-                        })
-        except requests.exceptions.RequestException as e:
-            print e.message()
-        else:
-            if rsp.status_code == requests.codes.ok:
-                if not rsp.json()['errcode']:
-                    print "Login successfully."
-                    #self.setConfig('cookie', self.__session.cookies)
-                else:
-                    print "Login failed with response errcode: {0}".format(rsp.json()['errcode'])
-                return True
-            else:
-                print "Login failed: {0}".format(rsp.status_code)
-        return False
+        code, msg = self.login_post(data)
+        while code == 1:
+            print msg
+            print "Getting captcha..."
+            self.get_captcha()
+            captcha = raw_input("Input captcha:\n")
+            data['captcha'] = captcha
+            code, msg = self.login_post(data)
+
+        print "Login successfully."
+        self.setConfig('cookie', self.__session.cookies)
 
     def logout(self):
-        try:
-            rsp = self.get(Session._HOST_ + "/logout")
-        except requests.exceptions.RequestException as e:
-            print e.message()
+        rsp = self.get(Session._HOST_ + "/logout")
+        if rsp.status_code == requests.codes.ok:
+            print "Logout successfully."
+            #self.setConfig('cookie', self.__session.cookies)
         else:
-            if rsp.status_code == requests.codes.ok:
-                print "Logout successfully."
-                #self.setConfig('cookie', self.__session.cookies)
-                return True
-            else:
-                print "Logout failed : {0}".format(rsp.status_code)
-        return False
+            print "Logout failed : {0}".format(rsp.status_code)
 
 
 
