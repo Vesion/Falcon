@@ -37,6 +37,7 @@ class Entry():
         self.url = url
 
         # get the soup after getting content
+        # IF url not provided, get homepage entry
         self.soup = self.getSoup(self.getContent(HOST_URL + self.url))
 
     def getContent(self, url):

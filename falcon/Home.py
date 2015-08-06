@@ -9,15 +9,11 @@
 
 # -*- coding: utf-8 -*-
 
-import sys
-import requests
-import json
-import re
-
-from Entry import Entry
+from .Utils import *
+from .Entry import Entry
 
 class Home(Entry):
-    """ Tool class for getting home personal info """
+    """ Tool class for getting homepage info """
 
     def __init__(self, session):
         Entry.__init__(self, session)
