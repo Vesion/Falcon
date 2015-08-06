@@ -6,7 +6,6 @@ if __name__ == "__main__":
     s = Session()
 
     s.login()
-    s.logout()
 
     #e = Entry(s)
     #print e.soup
@@ -64,3 +63,4 @@ if __name__ == "__main__":
     #print t.get_description()
     #print ''
 
+    s.logout()

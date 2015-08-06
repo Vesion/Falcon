@@ -23,8 +23,13 @@ class Session():
     """
 
     def __init__(self):
+        # private members for maitain convenience
         self.__session = requests.session()
         self.__config = self.getConfig()
+
+        # wrapped HTTP methods
+        self.get = self.__session.get
+        self.post = self.__session.post
 
     def setHeader(self, headers):
         for key, value in headers.items():
@@ -51,12 +56,6 @@ class Session():
         cf.read('config.ini')
         return cf
     
-    def get(self, url, params = {}):
-        return self.__session.get(url, params = params)
-
-    def post(self, url, data = {}):
-        return self.__session.post(url, data = data)
-    
 
     def login(self):
         '''
@@ -76,7 +75,7 @@ class Session():
         # closure function for getting captcha image
         def get_captcha():
             params = {'r' : str(int(time.time() * 1000))}
-            rsp = self.__session.get(Get_Captcha_URL, params = params, stream = True)
+            rsp = self.get(Get_Captcha_URL, params = params, stream = True)
             if rsp.status_code == 200:
                 with open('captcha.gif', 'wb') as f:
                     rsp.raw.decode_content = True
