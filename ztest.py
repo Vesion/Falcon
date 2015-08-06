@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 
-from falcon import Session, Entry, Home, Answer, Question, User, Collection, Topic, Column
+from falcon import *
 
 if __name__ == "__main__":
     s = Session()

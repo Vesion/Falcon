@@ -9,20 +9,21 @@
 
 # -*- coding: utf-8 -*-
 
-__title__ = 'falcon'
-__version__ = '2.0.1'
-__author__ = 'Shine Xu'
-__license__ = 'The MIT License (MIT)'
-__copyright__ = 'Copyright 2015 Shine Xu'
+__title__ = "falcon"
+__version__ = "2.0.1"
+__author__ = "Shine Xu"
+__license__ = "The MIT License (MIT)"
+__copyright__ = "Copyright 2015 Shine Xu"
 
+from .Utils import *
 
-from Session import Session
+from .Session import Session
 
-from Entry import Entry
-from Home import Home
-from Answer import Answer
-from Question import Question
-from Topic import Topic
-from User import User
-from Collection import Collection
-from Column import Column
+from .Entry import Entry
+from .Home import Home
+from .Answer import Answer
+from .Question import Question
+from .Topic import Topic
+from .User import User
+from .Collection import Collection
+from .Column import Column

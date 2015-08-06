@@ -58,11 +58,11 @@ class Session():
     
 
     def login(self):
-        '''
+        """
         Login Zhihu, identify the user through email and pwd.
         Perhaps, the captcha need to be input.
         This method MUST be called before any other entry requests.
-        '''
+        """
 
         # closure function for sending post
         def login_post(data):
@@ -105,11 +105,12 @@ class Session():
         self.setConfig('cookie', self.__session.cookies)
 
     def logout(self):
-        '''
+        """
         Logout Zhihu.
         This method MUST be called at the end,
         if not, 403 (Forbidden) will be responded in next login.
-        '''
+        """
+
         rsp = self.get(Logout_URL)
         if rsp.status_code == requests.codes.ok:
             print "Logout successfully."
