@@ -5,11 +5,11 @@ from falcon import Session, Entry, Home, Answer, Question, User, Collection, Top
 if __name__ == "__main__":
     s = Session()
 
-    #e = Entry(s)
-    #print e.soup
-
     s.login()
     s.logout()
+
+    #e = Entry(s)
+    #print e.soup
 
     #i = Home(s)
     #print i.get_all_following_questions(limit = 22)

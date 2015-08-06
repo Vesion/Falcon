@@ -9,27 +9,19 @@
 
 # -*- coding: utf-8 -*-
 
-import sys
 import platform
-import requests
-from bs4 import BeautifulSoup as _Bs
-try:
-    __import__('lxml')
-    BeautifulSoup = lambda makeup: _Bs(makeup, 'lxml')
-except ImportError:
-    BeautifulSoup = lambda makeup: _Bs(makeup, 'html.parser')
 
-
-from Session import Session
+from .Utils import *
+from .Session import Session
 
 class Entry():
     """
     Base class for all specified entries.
-    Each entry is identified by a unique url, 
+    An entry is identified by a unique url, like '/question/27936593'
     the only way to instantiate an entry is getting by url.
     NOTE:
         All of get_* APIs in tool classes are NOT getting an entry,
-        but getting text/url/urllist/dict, for performance regrading.
+        but getting text|url|urllist|dict, for performance regrading.
         (Use that Entry(session, url) to manually get an entry instance indeed)
     API: encode2Character
     Wrapper: getContent, getSoup, getId
@@ -37,16 +29,15 @@ class Entry():
 
     def __init__(self, session, url = ""):
 
-        # protected member for specific use
+        # after login, request session is maitained automatically
         self.session = session
-        self.soup = None
 
         # unique identity of each entry
-        # always a sequence of number defined by zhihu
-        # usually used to locate the web page
+        # like '/question/27936593'
         self.url = url
 
-        self.soup = self.getSoup(self.getContent(Session._HOST_ + self.url))
+        # get the soup after getting content
+        self.soup = self.getSoup(self.getContent(HOST_URL + self.url))
 
     def getContent(self, url):
         try:
@@ -64,7 +55,7 @@ class Entry():
     def getId(self):
         return self.url.split('/')[-1]
 
-    # encode/decode character tool API
+    # encode Chinese characters
     def encode2Character(self, content):
         if platform.system() == "Windows":
             content = content.decode('utf-8').encode('gbk')

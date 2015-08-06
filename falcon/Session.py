@@ -9,6 +9,7 @@
 
 # -*- coding: utf-8 -*-
 
+import sys
 import time
 import ConfigParser
 
@@ -67,7 +68,10 @@ class Session():
         # closure function for sending post
         def login_post(data):
             rsp = self.post(Login_URL, data = data)
-            return rsp.json()['r'], rsp.json()['msg']
+            if rsp.status_code == requests.codes.ok:
+                return rsp.json()['r'], rsp.json()['msg']
+            else:
+                sys.exit("HTTP error code: {0}".format(rsp.status_code)) 
         
         # closure function for getting captcha image
         def get_captcha():
@@ -102,6 +106,11 @@ class Session():
         self.setConfig('cookie', self.__session.cookies)
 
     def logout(self):
+        '''
+        Logout Zhihu.
+        This method MUST be called at the end,
+        if not, 403 (Forbidden) will be responded in next login.
+        '''
         rsp = self.get(Logout_URL)
         if rsp.status_code == requests.codes.ok:
             print "Logout successfully."
