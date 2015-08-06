@@ -15,7 +15,6 @@ __author__ = "Shine Xu"
 __license__ = "The MIT License (MIT)"
 __copyright__ = "Copyright 2015 Shine Xu"
 
-from .Utils import *
 
 from .Session import Session
 

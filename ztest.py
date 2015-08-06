@@ -1,8 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
 from falcon import *
+import falcon
 
 if __name__ == "__main__":
+    print dir(falcon)
+
     s = Session()
 
     s.login()

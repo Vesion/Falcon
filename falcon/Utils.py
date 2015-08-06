@@ -37,7 +37,7 @@ Get_More_Answer_URL = HOST_URL + "/node/QuestionAnswerListV2"
 Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"
 Get_More_Followees_URL = HOST_URL + "/node/ProfileFolloweesListV2"
 
-Column_URL = 'http://zhuanlan.zhihu.com'
+Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'
 #Columns_Posts_Data = Column_URL + '/api/columns/{0}/posts?limit=10&offset={1}'
 #Columns_Post_Data = Column_URL + '/api/columns/{0}/posts/{1}'
