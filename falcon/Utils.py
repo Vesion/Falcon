@@ -30,9 +30,11 @@ except ImportError:
 
 # CONSTANTS
 HOST_URL = "http://www.zhihu.com"
+
 Login_URL = HOST_URL + "/login/email"
 Logout_URL = HOST_URL + "/logout"
 Get_Captcha_URL = HOST_URL + "/captcha.gif"
+
 Get_Profile_Card_URL = HOST_URL + "/node/MemberProfileCardV2"
 Get_More_Answer_URL = HOST_URL + "/node/QuestionAnswerListV2"
 Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"

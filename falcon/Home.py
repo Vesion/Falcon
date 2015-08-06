@@ -31,8 +31,7 @@ class Home(Entry):
         soup = None
 
         rsp = self.session.get(fg_url)
-        if rsp.status_code == requests.codes.ok:
-            soup = self.getSoup(rsp.content)
+        soup = self.getSoup(rsp.content)
 
         def get_num_following_questions():
             num = soup.find('span', class_ = 'zg-gray-normal')\
@@ -64,8 +63,7 @@ class Home(Entry):
                             '_xsrf' : self.session.getCookie()['_xsrf']
                             }
                         rsp = self.session.post(fp_url, data)
-                        if rsp.status_code == requests.codes.ok:
-                            question_list = rsp.json()["msg"]
+                        question_list = rsp.json()["msg"]
                     question = self.getSoup(question_list[i % PageSize]).find('div')
                 url = question.find('a')['href']
                 yield url

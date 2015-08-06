@@ -46,8 +46,7 @@ class Entry():
         except requests.exceptions.RequestException as e:
             print e.message()
         else:
-            if rsp.status_code == requests.codes.ok:
-                return rsp.content
+            return rsp.content
         return None
     
     def getSoup(self, content):

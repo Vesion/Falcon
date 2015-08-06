@@ -121,8 +121,7 @@ class User(Entry):
             if not i % User.PageSize:
                 rsp = self.session.get(a_url, params = params)
                 params['page'] += 1
-                if rsp.status_code == requests.codes.ok:
-                    soup = self.getSoup(rsp.content)
+                soup = self.getSoup(rsp.content)
                 answer = soup.find('div', id = 'zh-profile-answer-list').div
             else:
                 answer = answer.find_next_sibling('div')
@@ -145,8 +144,7 @@ class User(Entry):
             if not i % User.PageSize:
                 rsp = self.session.get(a_url, params = params)
                 params['page'] += 1
-                if rsp.status_code == requests.codes.ok:
-                    soup = self.getSoup(rsp.content)
+                soup = self.getSoup(rsp.content)
                 ask = soup.find('div', id = 'zh-profile-ask-list').div
             else:
                 ask = ask.find_next_sibling('div')
@@ -167,8 +165,7 @@ class User(Entry):
         fp_url = self.session._HOST_ + "/node/ProfileFolloweesListV2"
 
         rsp = self.session.get(fg_url)
-        if rsp.status_code == requests.codes.ok:
-            soup = self.getSoup(rsp.content)
+        soup = self.getSoup(rsp.content)
         
         for i in xrange(self.get_num_followees()):
             if i == 0:
@@ -187,8 +184,7 @@ class User(Entry):
                         '_xsrf' : self.session.getCookie()['_xsrf']
                         }
                     rsp = self.session.post(fp_url, data)
-                    if rsp.status_code == requests.codes.ok:
-                        followee_list = rsp.json()["msg"]
+                    followee_list = rsp.json()["msg"]
                 followee = self.getSoup(followee_list[i % User.PageSize]).find('div')
             url = followee.find('a')['href']
             yield url
@@ -207,8 +203,7 @@ class User(Entry):
         fp_url = self.session._HOST_ + "/node/ProfileFollowersListV2"
 
         rsp = self.session.get(fg_url)
-        if rsp.status_code == requests.codes.ok:
-            soup = self.getSoup(rsp.content)
+        soup = self.getSoup(rsp.content)
         
         for i in xrange(self.get_num_followers()):
             if i == 0:
@@ -227,8 +222,7 @@ class User(Entry):
                         '_xsrf' : self.session.getCookie()['_xsrf']
                         }
                     rsp = self.session.post(fp_url, data)
-                    if rsp.status_code == requests.codes.ok:
-                        follower_list = rsp.json()["msg"]
+                    follower_list = rsp.json()["msg"]
                 follower = self.getSoup(follower_list[i % User.PageSize]).find('div')
             url = follower.find('a')['href']
             yield url

@@ -97,8 +97,7 @@ class Question(Entry):
                         '_xsrf' : self.session.getCookie()['_xsrf']
                         }
                     rsp = self.session.post(a_url, data)
-                    if rsp.status_code == requests.codes.ok:
-                        answer_list = rsp.json()["msg"]
+                    answer_list = rsp.json()["msg"]
                 answer = self.getSoup(answer_list[i % Question.AnswerSize]).find('div')
             url = "/question/{0}/answer/{1}".format(self.getId(), answer['data-atoken'])
             yield url
@@ -115,8 +114,7 @@ class Question(Entry):
         f_url = self.session._HOST_ + self.url + "/followers"
 
         rsp = self.session.get(f_url)
-        if rsp.status_code == requests.codes.ok:
-            soup = self.getSoup(rsp.content)
+        soup = self.getSoup(rsp.content)
 
         for i in xrange(self.get_num_followers()):
             if i == 0:
@@ -129,9 +127,8 @@ class Question(Entry):
                         '_xsrf' : self.session.getCookie()['_xsrf']
                         }
                     rsp = self.session.post(f_url, data)
-                    if rsp.status_code == requests.codes.ok:
-                        soup = self.getSoup(rsp.json()["msg"][1])
-                        follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+                    soup = self.getSoup(rsp.json()["msg"][1])
+                    follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
                 else:
                     follower = follower.find_next_sibling('div')
             link = follower.find('a', class_ = 'zm-item-link-avatar')

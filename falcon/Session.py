@@ -75,10 +75,9 @@ class Session():
         def get_captcha():
             params = {'r' : str(int(time.time() * 1000))}
             rsp = self.get(Get_Captcha_URL, params = params, stream = True)
-            if rsp.status_code == 200:
-                with open('captcha.gif', 'wb') as f:
-                    rsp.raw.decode_content = True
-                    shutil.copyfileobj(rsp.raw, f)
+            with open('captcha.gif', 'wb') as f:
+                rsp.raw.decode_content = True
+                shutil.copyfileobj(rsp.raw, f)
 
         # prepare post header, cookie and data
         self.setHeader(dict(self.__config.items('header')))
