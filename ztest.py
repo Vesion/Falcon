@@ -14,14 +14,15 @@ if __name__ == "__main__":
     #e = Entry(s)
     #print e.soup
 
-    #i = Home(s)
-    #print i.get_all_following_questions(num = 22)
+    i = Home(s)
+    print i.get_all_following_questions(num = 22)
 
     c = Collection(s, "/collection/19647118")
     print c.getId()
     print c.get_title()
     print c.get_creator()
-    c.follow_it() 
+    print c.get_all_questions()
+    #c.follow_it() 
     print ""
 
 

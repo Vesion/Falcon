@@ -28,10 +28,6 @@ class Home(Entry):
             A [list] of following questions urls.
         """
 
-        question = None
-        question_list = []
-        soup = None
-
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
 
@@ -43,13 +39,11 @@ class Home(Entry):
             return int(num.group(0))
 
         fq_num = get_num_following_questions()
+        question = None
+        question_list = []
 
         def get_following_questions():
-            """
-            First get the following question page.
-            The original page has `FQ_Item_Num` questions at most for search.
-            Then use AJAX post to get `FQ_Item_Num` questions each time until reach max.
-            """
+            """ A generator that yield a question url per next().  """
 
             for i in xrange(fq_num):
                 if i == 0:

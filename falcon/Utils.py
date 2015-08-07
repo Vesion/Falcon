@@ -31,8 +31,14 @@ except ImportError:
 
 # CONSTANTS
 
+# Status Code
+SUCCESS = 1
+FAILURE = 0
+
 # Encoding
-CODE = "gbk" if platform.system() == "Windows" else "utf-8"
+CODE = "gbk"\
+            if platform.system() == "Windows" else\
+        "utf-8"
 
 # URLs
 HOST_URL = "http://www.zhihu.com"
