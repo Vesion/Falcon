@@ -13,8 +13,8 @@ if __name__ == "__main__":
     #e = Entry(s)
     #print e.soup
 
-    #i = Home(s)
-    #print i.get_all_following_questions(limit = 22)
+    i = Home(s)
+    print i.get_all_following_questions(num = 22)
 
     #q = Question(s, "/question/27936593")
     #print q.getId()
@@ -23,8 +23,8 @@ if __name__ == "__main__":
     #print q.get_description()
     #print q.get_topics()
     #print q.get_related_questions()
-    #print q.get_all_answers(limit = 21)
-    #print q.get_all_followers(limit = 21)
+    #print q.get_all_answers(num = 21)
+    #print q.get_all_followers(num = 21)
     #print ''
 
     #u = User(s, "/people/fu-er")
@@ -39,10 +39,10 @@ if __name__ == "__main__":
     #print u.get_num_asks()
     #print u.get_num_thanks()
     #print u.get_num_column_papers()
-    #print u.get_all_answers(limit = 21)
-    #print u.get_all_asks(limit = 21)
-    #print u.get_all_followees(limit = 21)
-    #print u.get_all_followers(limit = 21)
+    #print u.get_all_answers(num = 21)
+    #print u.get_all_asks(num = 21)
+    #print u.get_all_followees(num = 21)
+    #print u.get_all_followers(num = 21)
     #print ''
 
     #c = Collection(s, "/collection/36750683")
