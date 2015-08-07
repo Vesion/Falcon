@@ -9,12 +9,20 @@ if __name__ == "__main__":
     s = Session()
 
     s.login()
+    print ""
 
     #e = Entry(s)
     #print e.soup
 
-    i = Home(s)
-    print i.get_all_following_questions(num = 22)
+    #i = Home(s)
+    #print i.get_all_following_questions(num = 22)
+
+    c = Collection(s, "/collection/19647118")
+    print c.getId()
+    print c.get_title()
+    print c.get_creator()
+    print ""
+
 
     #q = Question(s, "/question/27936593")
     #print q.getId()
@@ -43,12 +51,6 @@ if __name__ == "__main__":
     #print u.get_all_asks(num = 21)
     #print u.get_all_followees(num = 21)
     #print u.get_all_followers(num = 21)
-    #print ''
-
-    #c = Collection(s, "/collection/36750683")
-    #print c.getId()
-    #print c.get_title()
-    #print c.get_creator()
     #print ''
 
     #a = Answer(s, "/question/28090214/answer/39367455")

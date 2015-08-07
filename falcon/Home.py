@@ -37,7 +37,7 @@ class Home(Entry):
 
         def get_num_following_questions():
             num = soup.find('span', class_ = 'zg-gray-normal')\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
             # num now is "(\d+)"
             num = re.search('\d+', num)
             return int(num.group(0))

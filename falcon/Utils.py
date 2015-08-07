@@ -13,6 +13,7 @@
 # Packages and modules for common use 
 import os
 import sys
+import platform
 import shutil
 import json
 import re
@@ -29,6 +30,11 @@ except ImportError:
     BeautifulSoup = lambda makeup: BS(makeup, 'html.parser')
 
 # CONSTANTS
+
+# Encoding
+CODE = "gbk" if platform.system() == "Windows" else "utf-8"
+
+# URLs
 HOST_URL = "http://www.zhihu.com"
 
 Login_URL = HOST_URL + "/login/email"

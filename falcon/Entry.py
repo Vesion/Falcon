@@ -9,8 +9,6 @@
 
 # -*- coding: utf-8 -*-
 
-import platform
-
 from .Utils import *
 from .Session import Session
 
@@ -56,6 +54,7 @@ class Entry():
         return self.url.split('/')[-1]
 
     # encode Chinese characters
+    # discarded!
     def encode2Character(self, content):
         if platform.system() == "Windows":
             content = content.decode('utf-8').encode('gbk')

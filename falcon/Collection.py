@@ -20,9 +20,8 @@ class Collection(Entry):
 
     def get_title(self):
         """ Return title text. """
-        title = self.soup.find('h2', id = 'zh-fav-head-title')\
-                        .get_text(strip = True).encode('utf-8')
-        return self.encode2Character(title)
+        return self.soup.find('h2', id = 'zh-fav-head-title')\
+                        .get_text(strip = True).encode(CODE)
 
     def get_creator(self):
         """ Return creator url. """
