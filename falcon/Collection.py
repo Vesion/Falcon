@@ -28,35 +28,39 @@ class Collection(Entry):
         return self.soup.find('h2', class_ = 'zm-list-content-title')\
                         .a['href']
 
-    def get_questions(self):
-        """ A generator that yield a question url per next(). """
+    def get_items(self, itype):
+        """ A generator that yield a question|answer url per next(). """
 
-        def get_page_questions(soup):
-            questions = soup.find_all("div", class_="zm-item")
-            if len(questions) == 0:
+        def get_page_items(soup):
+            items = soup.find_all('div', class_='zm-item')
+            if len(items) == 0:
                 yield None
                 return
             else:
-                for question in questions:
-                    if question.h2:
-                        yield question.h2.a['href']
+                for item in items:
+                    if itype == 'question':
+                        if item.h2:
+                            yield item.h2.a['href']
+                    elif itype == 'answer':
+                        yield item.find('a', class_ = 'answer-date-link')['href']
 
-        for url in get_page_questions(self.soup):
+        for url in get_page_items(self.soup):
             yield url
         i = 2
         while True:
             params = {'page' : i}
             rsp = self.session.get(HOST_URL+self.url, params = params)
             soup = self.getSoup(rsp.content)
-            for url in get_page_questions(soup):
+            for url in get_page_items(soup):
                 if not url:
                     return
                 yield url
             i += 1
 
-    def get_all_questions(self):
-        """ Return: A [list] of question urls """
-        q = self.get_questions() 
+    def get_all_items(self, itype):
+        """ Return: A [list] of question|answer urls. """
+        q = self.get_questions() if itype == 'question' else\
+            self.get_answers()
         urls = []
         try:
             while True:
@@ -65,9 +69,21 @@ class Collection(Entry):
         finally:
             return urls
 
+    def get_questions(self):
+        """ Call get_items with question. """
+        return self.get_items('question')
+
+    def get_all_questions(self):
+        """ Call get_all_items with question. """
+        return self.get_all_items('question')
+
     def get_answers(self):
-        """ A generator that yield an anwer url per next(). """
-        return
+        """ Call get_items with answer. """
+        return self.get_items('answer')
+
+    def get_all_answers(self):
+        """ Call get_all_items with answer. """
+        return self.get_all_items('answer')
 
     def follow_it(self):
         """ Follow this collection. Return status code. """

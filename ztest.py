@@ -25,6 +25,7 @@ if __name__ == "__main__":
     print c.get_title()
     print c.get_creator()
     print c.get_all_questions()
+    print c.get_all_answers()
     #c.follow_it() 
     print ""
 
