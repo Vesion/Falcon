@@ -18,21 +18,22 @@ class Home(Entry):
     def __init__(self, session):
         Entry.__init__(self, session)
 
+    def get_num_following_questions(self):
+        """ Return number of following questions int. """
+        rsp = self.session.get(Get_FQ_URL)
+        soup = self.getSoup(rsp.content)
+        num = soup.find('span', class_ = 'zg-gray-normal')\
+                    .get_text(strip = True).encode(CODE)
+        # num now is "(\d+)"
+        num = re.search('\d+', num)
+        return int(num.group(0))
 
     def get_following_questions(self):
         """ A generator that yield a question url per next().  """
-
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
 
-        def get_num_following_questions():
-            num = soup.find('span', class_ = 'zg-gray-normal')\
-                        .get_text(strip = True).encode(CODE)
-            # num now is "(\d+)"
-            num = re.search('\d+', num)
-            return int(num.group(0))
-
-        fq_num = get_num_following_questions()
+        fq_num = self.get_num_following_questions()
         question = None
         question_list = []
 
@@ -59,7 +60,6 @@ class Home(Entry):
 
     def get_all_following_questions(self):
         """ Return: A [list] of following questions urls. """
-
         q = self.get_following_questions()
         urls = []
         try:

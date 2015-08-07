@@ -61,8 +61,7 @@ class Collection(Entry):
         try:
             while True:
                 urls.append(q.next())
-        except StopIteration:
-            pass
+        except StopIteration: pass
         finally:
             return urls
 
