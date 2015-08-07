@@ -55,10 +55,7 @@ class Collection(Entry):
             i += 1
 
     def get_all_questions(self):
-        """
-        Params: num - The size of question urls list
-        Return: A [list] of question urls
-        """
+        """ Return: A [list] of question urls """
         q = self.get_questions() 
         urls = []
         try:

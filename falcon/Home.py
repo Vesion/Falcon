@@ -19,14 +19,8 @@ class Home(Entry):
         Entry.__init__(self, session)
 
 
-    def get_all_following_questions(self, num = sys.maxsize):
-        """
-        Get a [list] of my following questions urls.
-        Params:
-            num - The size of url list. If not provided, return all following urls.
-        Return:
-            A [list] of following questions urls.
-        """
+    def get_following_questions(self):
+        """ A generator that yield a question url per next().  """
 
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
@@ -42,29 +36,35 @@ class Home(Entry):
         question = None
         question_list = []
 
-        def get_following_questions():
-            """ A generator that yield a question url per next().  """
+        for i in xrange(fq_num):
+            if i == 0:
+                question = soup.find('div', class_ = 'zm-profile-section-item zg-clear')
+            elif i < FQ_Item_Num:
+                question = question.find_next_sibling('div')
+            else:
+                if not i % FQ_Item_Num:
+                    data = {
+                        'method' : 'next',
+                        'params' : json.dumps({
+                            'offset' : FQ_Item_Num * (i/FQ_Item_Num)
+                            }),
+                        '_xsrf' : self.session.getCookie()['_xsrf']
+                        }
+                    rsp = self.session.post(Get_More_FQ_URL, data)
+                    question_list = rsp.json()["msg"]
+                question = self.getSoup(question_list[i % FQ_Item_Num]).find('div')
+            url = question.find('a')['href']
+            yield url
+        print "No more followees."
 
-            for i in xrange(fq_num):
-                if i == 0:
-                    question = soup.find('div', class_ = 'zm-profile-section-item zg-clear')
-                elif i < FQ_Item_Num:
-                    question = question.find_next_sibling('div')
-                else:
-                    if not i % FQ_Item_Num:
-                        data = {
-                            'method' : 'next',
-                            'params' : json.dumps({
-                                'offset' : FQ_Item_Num * (i/FQ_Item_Num)
-                                }),
-                            '_xsrf' : self.session.getCookie()['_xsrf']
-                            }
-                        rsp = self.session.post(Get_More_FQ_URL, data)
-                        question_list = rsp.json()["msg"]
-                    question = self.getSoup(question_list[i % FQ_Item_Num]).find('div')
-                url = question.find('a')['href']
-                yield url
-            print "No more followees."
+    def get_all_following_questions(self):
+        """ Return: A [list] of following questions urls. """
 
-        q = get_following_questions()
-        return [q.next() for i in xrange(min(num, fq_num))]
+        q = self.get_following_questions()
+        urls = []
+        try:
+            while True:
+                urls.append(q.next())
+        except StopIteration: pass
+        finally:
+            return urls

@@ -15,7 +15,7 @@ if __name__ == "__main__":
     #print e.soup
 
     i = Home(s)
-    print i.get_all_following_questions(num = 22)
+    print i.get_all_following_questions()
 
     c = Collection(s, "/collection/19647118")
     print c.getId()
