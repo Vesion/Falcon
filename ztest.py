@@ -21,6 +21,7 @@ if __name__ == "__main__":
     print c.getId()
     print c.get_title()
     print c.get_creator()
+    c.follow_it() 
     print ""
 
 

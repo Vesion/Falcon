@@ -27,3 +27,23 @@ class Collection(Entry):
         """ Return creator url. """
         return self.soup.find('h2', class_ = 'zm-list-content-title')\
                         .a['href']
+
+    def get_all_answers(self):
+        """
+
+        """
+        return
+
+    def follow_it(self):
+        """ Follow this collection. """
+        favlist_id = self.soup.find('div', id = 'zh-list-side-head')\
+                                .a['id'].split('-')[-1]
+        data = {
+            'favlist_id' : favlist_id,
+            '_xsrf'      : self.session.getCookie()['_xsrf']
+            }
+        rsp = self.session.post(Follow_Collection_URL, data)
+        if rsp.status_code == requests.codes.ok:
+            print "Follow this collection successfully!"
+        else:
+            print "Fail to follow this collection"

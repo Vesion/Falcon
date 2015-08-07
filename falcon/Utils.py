@@ -44,6 +44,9 @@ Get_Captcha_URL = HOST_URL + "/captcha.gif"
 Get_FQ_URL = HOST_URL + "/question/following"
 Get_More_FQ_URL = HOST_URL + "/node/ProfileFollowedQuestionsV2"
 
+Follow_Collection_URL = HOST_URL + "/collection/follow"
+Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
+
 Get_Profile_Card_URL = HOST_URL + "/node/MemberProfileCardV2"
 Get_More_Answer_URL = HOST_URL + "/node/QuestionAnswerListV2"
 Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"
@@ -54,4 +57,5 @@ Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Posts_Data = Column_URL + '/api/columns/{0}/posts?limit=10&offset={1}'
 #Columns_Post_Data = Column_URL + '/api/columns/{0}/posts/{1}'
 
-FQ_Item_Num = 20
+# Numbers
+FQ_Item_Num = 20 # Home
