@@ -49,7 +49,7 @@ class Collection(Entry):
         i = 2
         while True:
             params = {'page' : i}
-            rsp = self.session.get(HOST_URL+self.url, params = params)
+            rsp = self.session.get(self.url, params = params)
             soup = self.getSoup(rsp.content)
             for url in get_page_items(soup):
                 if not url:

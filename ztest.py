@@ -15,13 +15,9 @@ if __name__ == "__main__":
     #print e.soup
 
     i = Home(s)
-    q = i.get_following_questions()
-    for i in xrange(30):
-        print q.next() 
-    #print i.get_all_following_questions()
+    print i.get_all_following_questions()
 
     c = Collection(s, "/collection/19647118")
-    print c.getId()
     print c.get_title()
     print c.get_creator()
     print c.get_all_questions()
@@ -31,7 +27,6 @@ if __name__ == "__main__":
 
 
     #q = Question(s, "/question/27936593")
-    #print q.getId()
     #print q.get_title()
     #print q.get_num_answers()
     #print q.get_description()
@@ -42,7 +37,6 @@ if __name__ == "__main__":
     #print ''
 
     #u = User(s, "/people/fu-er")
-    #print u.getId()
     #print u.get_name()
     #print u.get_biography()
     #print u.get_about()['business']['text']
@@ -60,7 +54,6 @@ if __name__ == "__main__":
     #print ''
 
     #a = Answer(s, "/question/28090214/answer/39367455")
-    #print a.getId()
     #print a.get_author()
     #print a.get_num_upvotes()
     #print a.get_num_comments()
@@ -69,7 +62,6 @@ if __name__ == "__main__":
     #print ''
 
     #t = Topic(s, "/topic/19562033")
-    #print t.getId()
     #print t.get_num_followers()
     #print t.get_description()
     #print ''
