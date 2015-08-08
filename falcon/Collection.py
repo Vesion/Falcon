@@ -58,11 +58,11 @@ class Collection(Entry):
             i += 1
 
     def _get_questions(self):
-        """ Call _get_items with question. """
+        """ Return generator with question. """
         return self._get_items('question')
 
     def _get_answers(self):
-        """ Call _get_items with answer. """
+        """ Return generator with answer. """
         return self._get_items('answer')
 
     def _get_all_items(self, itype):
@@ -78,11 +78,11 @@ class Collection(Entry):
             return urls
 
     def get_all_questions(self):
-        """ Call _get_all_items with question. """
+        """ Return: A [list] of question urls. """
         return self._get_all_items('question')
 
     def get_all_answers(self):
-        """ Call _get_all_items with answer. """
+        """ Return: A [list] of answer urls. """
         return self._get_all_items('answer')
 
     def follow_it(self):
