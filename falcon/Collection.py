@@ -28,7 +28,7 @@ class Collection(Entry):
         return self.soup.find('h2', class_ = 'zm-list-content-title')\
                         .a['href']
 
-    def get_items(self, itype):
+    def _get_items(self, itype):
         """ A generator that yield a question|answer url per next(). """
 
         def get_page_items(soup):
@@ -57,10 +57,18 @@ class Collection(Entry):
                 yield url
             i += 1
 
-    def get_all_items(self, itype):
+    def _get_questions(self):
+        """ Call _get_items with question. """
+        return self._get_items('question')
+
+    def _get_answers(self):
+        """ Call _get_items with answer. """
+        return self._get_items('answer')
+
+    def _get_all_items(self, itype):
         """ Return: A [list] of question|answer urls. """
-        q = self.get_questions() if itype == 'question' else\
-            self.get_answers()
+        q = self._get_questions() if itype == 'question' else\
+            self._get_answers()
         urls = []
         try:
             while True:
@@ -69,21 +77,13 @@ class Collection(Entry):
         finally:
             return urls
 
-    def get_questions(self):
-        """ Call get_items with question. """
-        return self.get_items('question')
-
     def get_all_questions(self):
-        """ Call get_all_items with question. """
-        return self.get_all_items('question')
-
-    def get_answers(self):
-        """ Call get_items with answer. """
-        return self.get_items('answer')
+        """ Call _get_all_items with question. """
+        return self._get_all_items('question')
 
     def get_all_answers(self):
-        """ Call get_all_items with answer. """
-        return self.get_all_items('answer')
+        """ Call _get_all_items with answer. """
+        return self._get_all_items('answer')
 
     def follow_it(self):
         """ Follow this collection. Return status code. """

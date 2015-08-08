@@ -28,7 +28,7 @@ class Home(Entry):
         num = re.search('\d+', num)
         return int(num.group(0))
 
-    def get_following_questions(self):
+    def _get_following_questions(self):
         """ A generator that yield a question url per next().  """
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
@@ -56,11 +56,10 @@ class Home(Entry):
                 question = self.getSoup(question_list[i % FQ_Item_Num]).find('div')
             url = question.find('a')['href']
             yield url
-        print "No more followees."
 
     def get_all_following_questions(self):
         """ Return: A [list] of following questions urls. """
-        q = self.get_following_questions()
+        q = self._get_following_questions()
         urls = []
         try:
             while True:
