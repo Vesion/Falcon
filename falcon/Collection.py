@@ -28,7 +28,7 @@ class Collection(Entry):
         return self.soup.find('h2', class_ = 'zm-list-content-title')\
                         .a['href']
 
-    def _get_items(self, itype):
+    def get_items(self, itype):
         """ A generator that yield a question|answer url per next(). """
 
         def get_page_items(soup):
@@ -59,13 +59,13 @@ class Collection(Entry):
 
     def _get_questions(self):
         """ Return generator with question. """
-        return self._get_items('question')
+        return self.get_items('question')
 
     def _get_answers(self):
         """ Return generator with answer. """
-        return self._get_items('answer')
+        return self.get_items('answer')
 
-    def _get_all_items(self, itype):
+    def get_all_items(self, itype):
         """ Return: A [list] of question|answer urls. """
         q = self._get_questions() if itype == 'question' else\
             self._get_answers()
@@ -79,11 +79,11 @@ class Collection(Entry):
 
     def get_all_questions(self):
         """ Return: A [list] of question urls. """
-        return self._get_all_items('question')
+        return self.get_all_items('question')
 
     def get_all_answers(self):
         """ Return: A [list] of answer urls. """
-        return self._get_all_items('answer')
+        return self.get_all_items('answer')
 
     def follow_it(self):
         """ Follow this collection. Return status code. """

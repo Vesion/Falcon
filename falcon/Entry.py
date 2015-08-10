@@ -24,7 +24,7 @@ class Entry():
     Wrapper: getContent, getSoup
     """
 
-    def __init__(self, session, eid = ""):
+    def __init__(self, session, eid = ''):
 
         # after login, request session is maitained automatically
         self.session = session

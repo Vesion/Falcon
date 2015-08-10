@@ -115,11 +115,3 @@ class Session():
             #self.setConfig('cookie', self.__session.cookies)
         else:
             print "Logout failed : {0}".format(rsp.status_code)
-
-
-
-if __name__ == "__main__":
-    s = Session()
-    s.login()
-    s.logout()
-    
