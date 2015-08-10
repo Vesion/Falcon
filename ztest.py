@@ -16,13 +16,14 @@ if __name__ == "__main__":
 
     i = Home(s)
     print i.get_all_following_questions()
+    print i.get_all_following_collections()
 
     c = Collection(s, "/collection/19647118")
     print c.get_title()
     print c.get_creator()
     print c.get_all_questions()
     print c.get_all_answers()
-    #c.follow_it() 
+    print c.follow_it() 
     print ""
 
 

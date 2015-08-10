@@ -28,38 +28,37 @@ class Home(Entry):
         num = re.search('\d+', num)
         return int(num.group(0))
 
-    def _get_following_questions(self):
+    def get_following_questions(self):
         """ A generator that yield a question eid per next().  """
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
-
-        fq_num = self.get_num_following_questions()
-        question = None
-        questions = []
-
-        for i in xrange(fq_num):
-            if i == 0:
-                question = soup.find('div', class_ = 'zm-profile-section-item zg-clear')
-            elif i < FQ_Item_Num:
-                question = question.find_next_sibling('div')
+        questions = soup.find_all('div', class_ = 'zm-profile-section-item zg-clear')
+        if not questions:
+            return
+        i, question = 0, None
+        for question in questions:
+            i += 1
+            yield question.find('a')['href']
+        while not i % FQ_Item_Num:
+            data = {
+                'method' : 'next',
+                'params' : json.dumps({
+                    'offset' : i
+                    }),
+                '_xsrf'  : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(Get_More_FQ_URL, data)
+            if rsp.json()['r'] == 0:
+                questions = self.getSoup(rso.json()['msg']).find_all('div', class_ = 'zm-profile-section-item zg-clear')
+                for question in questions:
+                    i += 1
+                    yield question.find('a')['href']
             else:
-                if not i % FQ_Item_Num:
-                    data = {
-                        'method' : 'next',
-                        'params' : json.dumps({
-                            'offset' : FQ_Item_Num * (i/FQ_Item_Num)
-                            }),
-                        '_xsrf'  : self.session.getCookie()['_xsrf']
-                        }
-                    rsp = self.session.post(Get_More_FQ_URL, data)
-                    questions = rsp.json()['msg']
-                question = self.getSoup(questions[i % FQ_Item_Num]).find('div')
-            eid = question.find('a')['href']
-            yield eid
+                return
 
     def get_all_following_questions(self):
         """ Return: A [list] of following questions eids. """
-        q = self._get_following_questions()
+        q = self.get_following_questions()
         eids = []
         try:
             while True:
@@ -68,39 +67,35 @@ class Home(Entry):
         finally:
             return eids
 
-    def _get_following_collections(self):
+    def get_following_collections(self):
         """ A generator that yield a collection eid per nex(). """
         rsp = self.session.get(Get_FC_URL)
         soup = self.getSoup(rsp.content)
         collections = soup.find_all('div', class_ = 'zm-item')
         if not collections:
-            yield None
             return
         i, collection = 0, None
         for collection in collections:
             i += 1
             yield collection.h2.a['href']
-        while True:
-            if not i % FC_Item_Num:
-                data = {
-                        'offset' : i,
-                        'start'  : collection['id'].split('-')[-1],
-                        '_xsrf'  : self.session.getCookie()['_xsrf']
-                    }
-                rsp = self.session.post(Get_More_FC_URL, data)
-                if rsp.json()['r'] == 0:
-                    collections = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-item')
-                    for collection in collections:
-                        i += 1
-                        yield collection.h2.a['href']
-                else:
-                    break
+        while not i % FC_Item_Num:
+            data = {
+                    'offset' : i,
+                    'start'  : collection['id'].split('-')[-1],
+                    '_xsrf'  : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(Get_More_FC_URL, data)
+            if rsp.json()['r'] == 0:
+                collections = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-item')
+                for collection in collections:
+                    i += 1
+                    yield collection.h2.a['href']
             else:
                 return
 
     def get_all_following_collections(self):
         """ Return: A [list] of following collection eids. """
-        c = _get_following_collections()
+        c = self.get_following_collections()
         eids = []
         try:
             while True:
@@ -108,6 +103,3 @@ class Home(Entry):
         except StopIteration: pass
         finally:
             return eids
-
-
-

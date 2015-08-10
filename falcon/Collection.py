@@ -28,13 +28,13 @@ class Collection(Entry):
         return self.soup.find('h2', class_ = 'zm-list-content-title')\
                         .a['href']
 
-    def get_items(self, itype):
+    def _get_items(self, itype):
         """ A generator that yield a question|answer eid per next(). """
 
         def get_page_items(soup):
             items = soup.find_all('div', class_='zm-item')
             if not items:
-                yield None
+                yield None # MUST yield None here.
                 return
             for item in items:
                 if itype == 'question':
@@ -51,23 +51,15 @@ class Collection(Entry):
             rsp = self.session.get(self.url, params = params)
             soup = self.getSoup(rsp.content)
             for eid in get_page_items(soup):
-                if not eid:
+                if not eid: # Due to yield None above, it works.
                     return
                 yield eid
             i += 1
 
-    def _get_questions(self):
-        """ Return generator with question. """
-        return self.get_items('question')
-
-    def _get_answers(self):
-        """ Return generator with answer. """
-        return self.get_items('answer')
-
-    def get_all_items(self, itype):
+    def _get_all_items(self, itype):
         """ Return: A [list] of question|answer eids. """
-        q = self._get_questions() if itype == 'question' else\
-            self._get_answers()
+        q = self._get_items('question') if itype == 'question' else\
+            self._get_items('answer')
         eids = []
         try:
             while True:
@@ -76,13 +68,21 @@ class Collection(Entry):
         finally:
             return eids
 
+    def get_questions(self):
+        """ Return generator with question. """
+        return self._get_items('question')
+
+    def get_answers(self):
+        """ Return generator with answer. """
+        return self._get_items('answer')
+
     def get_all_questions(self):
         """ Return: A [list] of question eids. """
-        return self.get_all_items('question')
+        return self._get_all_items('question')
 
     def get_all_answers(self):
         """ Return: A [list] of answer eids. """
-        return self.get_all_items('answer')
+        return self._get_all_items('answer')
 
     def follow_it(self):
         """ Follow this collection. Return status code. """
