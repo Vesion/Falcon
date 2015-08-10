@@ -49,10 +49,10 @@ class Home(Entry):
                         'params' : json.dumps({
                             'offset' : FQ_Item_Num * (i/FQ_Item_Num)
                             }),
-                        '_xsrf' : self.session.getCookie()['_xsrf']
+                        '_xsrf'  : self.session.getCookie()['_xsrf']
                         }
                     rsp = self.session.post(Get_More_FQ_URL, data)
-                    questions = rsp.json()["msg"]
+                    questions = rsp.json()['msg']
                 question = self.getSoup(questions[i % FQ_Item_Num]).find('div')
             eid = question.find('a')['href']
             yield eid
@@ -73,18 +73,41 @@ class Home(Entry):
         rsp = self.session.get(Get_FC_URL)
         soup = self.getSoup(rsp.content)
         collections = soup.find_all('div', class_ = 'zm-item')
-        if len(collections) == 0:
+        if not collections:
             yield None
             return
-        else:
-            for collection in collections:
-                yield collection.h2.a['href']
-
-
-
+        i, collection = 0, None
+        for collection in collections:
+            i += 1
+            yield collection.h2.a['href']
+        while True:
+            if not i % FC_Item_Num:
+                data = {
+                        'offset' : i,
+                        'start'  : collection['id'].split('-')[-1],
+                        '_xsrf'  : self.session.getCookie()['_xsrf']
+                    }
+                rsp = self.session.post(Get_More_FC_URL, data)
+                if rsp.json()['r'] == 0:
+                    collections = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-item')
+                    for collection in collections:
+                        i += 1
+                        yield collection.h2.a['href']
+                else:
+                    break
+            else:
+                return
 
     def get_all_following_collections(self):
         """ Return: A [list] of following collection eids. """
+        c = _get_following_collections()
+        eids = []
+        try:
+            while True:
+                eids.append(c.next())
+        except StopIteration: pass
+        finally:
+            return eids
 
 
 

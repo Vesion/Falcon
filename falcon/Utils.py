@@ -31,40 +31,39 @@ except ImportError:
 
 # CONSTANTS
 
-# Status Code
+## Status Code
 SUCCESS = 1
 FAILURE = 0
 
-# Encoding
+## Encoding
 CODE = "gbk" if platform.system() == "Windows" else\
         "utf-8"
 
-# URLs
+## URLs
 HOST_URL = "http://www.zhihu.com"
-
+### Session
 Login_URL = HOST_URL + "/login/email"
 Logout_URL = HOST_URL + "/logout"
 Get_Captcha_URL = HOST_URL + "/captcha.gif"
-
+### Home
 Get_FQ_URL = HOST_URL + "/question/following"
 Get_More_FQ_URL = HOST_URL + "/node/ProfileFollowedQuestionsV2"
-
 Get_FC_URL = HOST_URL + "/collections"
 Get_More_FC_URL = Get_FC_URL
-
+### Collection
 Follow_Collection_URL = HOST_URL + "/collection/follow"
 Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 
-Get_Profile_Card_URL = HOST_URL + "/node/MemberProfileCardV2"
-Get_More_Answer_URL = HOST_URL + "/node/QuestionAnswerListV2"
-Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"
-Get_More_Followees_URL = HOST_URL + "/node/ProfileFolloweesListV2"
+#Get_Profile_Card_URL = HOST_URL + "/node/MemberProfileCardV2"
+#Get_More_Answer_URL = HOST_URL + "/node/QuestionAnswerListV2"
+#Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"
+#Get_More_Followees_URL = HOST_URL + "/node/ProfileFolloweesListV2"
 
-Column_URL = "http://zhuanlan.zhihu.com"
+#Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'
 #Columns_Posts_Data = Column_URL + '/api/columns/{0}/posts?limit=10&offset={1}'
 #Columns_Post_Data = Column_URL + '/api/columns/{0}/posts/{1}'
 
-# Numbers
+## Numbers
 FQ_Item_Num = 20 # Home
 FC_Item_Num = 20 # Home

@@ -33,16 +33,15 @@ class Collection(Entry):
 
         def get_page_items(soup):
             items = soup.find_all('div', class_='zm-item')
-            if len(items) == 0:
+            if not items:
                 yield None
                 return
-            else:
-                for item in items:
-                    if itype == 'question':
-                        if item.h2:
-                            yield item.h2.a['href']
-                    elif itype == 'answer':
-                        yield item.find('a', class_ = 'answer-date-link')['href']
+            for item in items:
+                if itype == 'question':
+                    if item.h2:
+                        yield item.h2.a['href']
+                elif itype == 'answer':
+                    yield item.find('a', class_ = 'answer-date-link')['href']
 
         for eid in get_page_items(self.soup):
             yield eid

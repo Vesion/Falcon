@@ -15,11 +15,11 @@ from .Session import Session
 class Entry():
     """
     Base class for all specified entries.
-    An entry is identified by a unique id, like '/question/27936593'.
+    An entry is identified by a unique eid(entry-id), like '/question/27936593'.
     NOTE:
         All of get_* APIs in tool classes are NOT getting an entry,
-        but getting text|url|urllist|dict, for performance regrading.
-        (Use that Entry(session, url) to manually get an entry instance indeed)
+        but getting text|eid|eidlist|dict, for performance regrading.
+        Use that Entry(session, eid) to manually get an entry instance indeed
     API: encode2Character
     Wrapper: getContent, getSoup
     """
