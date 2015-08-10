@@ -29,13 +29,13 @@ class Home(Entry):
         return int(num.group(0))
 
     def _get_following_questions(self):
-        """ A generator that yield a question url per next().  """
+        """ A generator that yield a question eid per next().  """
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
 
         fq_num = self.get_num_following_questions()
         question = None
-        question_list = []
+        questions = []
 
         for i in xrange(fq_num):
             if i == 0:
@@ -52,18 +52,39 @@ class Home(Entry):
                         '_xsrf' : self.session.getCookie()['_xsrf']
                         }
                     rsp = self.session.post(Get_More_FQ_URL, data)
-                    question_list = rsp.json()["msg"]
-                question = self.getSoup(question_list[i % FQ_Item_Num]).find('div')
-            url = question.find('a')['href']
-            yield url
+                    questions = rsp.json()["msg"]
+                question = self.getSoup(questions[i % FQ_Item_Num]).find('div')
+            eid = question.find('a')['href']
+            yield eid
 
     def get_all_following_questions(self):
-        """ Return: A [list] of following questions urls. """
+        """ Return: A [list] of following questions eids. """
         q = self._get_following_questions()
-        urls = []
+        eids = []
         try:
             while True:
-                urls.append(q.next())
+                eids.append(q.next())
         except StopIteration: pass
         finally:
-            return urls
+            return eids
+
+    def _get_following_collections(self):
+        """ A generator that yield a collection eid per nex(). """
+        rsp = self.session.get(Get_FC_URL)
+        soup = self.getSoup(rsp.content)
+        collections = soup.find_all('div', class_ = 'zm-item')
+        if len(collections) == 0:
+            yield None
+            return
+        else:
+            for collection in collections:
+                yield collection.h2.a['href']
+
+
+
+
+    def get_all_following_collections(self):
+        """ Return: A [list] of following collection eids. """
+
+
+

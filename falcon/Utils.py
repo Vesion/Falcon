@@ -49,6 +49,9 @@ Get_Captcha_URL = HOST_URL + "/captcha.gif"
 Get_FQ_URL = HOST_URL + "/question/following"
 Get_More_FQ_URL = HOST_URL + "/node/ProfileFollowedQuestionsV2"
 
+Get_FC_URL = HOST_URL + "/collections"
+Get_More_FC_URL = Get_FC_URL
+
 Follow_Collection_URL = HOST_URL + "/collection/follow"
 Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 
@@ -64,3 +67,4 @@ Column_URL = "http://zhuanlan.zhihu.com"
 
 # Numbers
 FQ_Item_Num = 20 # Home
+FC_Item_Num = 20 # Home

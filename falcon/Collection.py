@@ -15,8 +15,8 @@ from .Entry import Entry
 class Collection(Entry):
     """ Tool class for getting collection info. """
 
-    def __init__(self, session, url):
-        Entry.__init__(self, session, url)
+    def __init__(self, session, eid):
+        Entry.__init__(self, session, eid)
 
     def get_title(self):
         """ Return title text. """
@@ -24,12 +24,12 @@ class Collection(Entry):
                         .get_text(strip = True).encode(CODE)
 
     def get_creator(self):
-        """ Return creator url. """
+        """ Return creator eid. """
         return self.soup.find('h2', class_ = 'zm-list-content-title')\
                         .a['href']
 
     def get_items(self, itype):
-        """ A generator that yield a question|answer url per next(). """
+        """ A generator that yield a question|answer eid per next(). """
 
         def get_page_items(soup):
             items = soup.find_all('div', class_='zm-item')
@@ -44,17 +44,17 @@ class Collection(Entry):
                     elif itype == 'answer':
                         yield item.find('a', class_ = 'answer-date-link')['href']
 
-        for url in get_page_items(self.soup):
-            yield url
+        for eid in get_page_items(self.soup):
+            yield eid
         i = 2
         while True:
             params = {'page' : i}
             rsp = self.session.get(self.url, params = params)
             soup = self.getSoup(rsp.content)
-            for url in get_page_items(soup):
-                if not url:
+            for eid in get_page_items(soup):
+                if not eid:
                     return
-                yield url
+                yield eid
             i += 1
 
     def _get_questions(self):
@@ -66,23 +66,23 @@ class Collection(Entry):
         return self.get_items('answer')
 
     def get_all_items(self, itype):
-        """ Return: A [list] of question|answer urls. """
+        """ Return: A [list] of question|answer eids. """
         q = self._get_questions() if itype == 'question' else\
             self._get_answers()
-        urls = []
+        eids = []
         try:
             while True:
-                urls.append(q.next())
+                eids.append(q.next())
         except StopIteration: pass
         finally:
-            return urls
+            return eids
 
     def get_all_questions(self):
-        """ Return: A [list] of question urls. """
+        """ Return: A [list] of question eids. """
         return self.get_all_items('question')
 
     def get_all_answers(self):
-        """ Return: A [list] of answer urls. """
+        """ Return: A [list] of answer eids. """
         return self.get_all_items('answer')
 
     def follow_it(self):
