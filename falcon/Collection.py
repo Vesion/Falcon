@@ -57,7 +57,7 @@ class Collection(Entry):
             i += 1
 
     def _get_all_items(self, itype):
-        """ Return: A [list] of question|answer eids. """
+        """ Return a [list] of question|answer eids. """
         q = self._get_items('question') if itype == 'question' else\
             self._get_items('answer')
         eids = []
@@ -77,12 +77,18 @@ class Collection(Entry):
         return self._get_items('answer')
 
     def get_all_questions(self):
-        """ Return: A [list] of question eids. """
+        """ Return a [list] of question eids. """
         return self._get_all_items('question')
 
     def get_all_answers(self):
-        """ Return: A [list] of answer eids. """
+        """ Return a [list] of answer eids. """
         return self._get_all_items('answer')
+
+    def get_num_followers(self):
+        """ Return number of followers int. """
+        num = self.soup.find('a', href = self.eid + "/followers")\
+                        .get_text(strip = True).encode(CODE)
+        return int(num)
 
     def follow_it(self):
         """ Follow this collection. Return status code. """

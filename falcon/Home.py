@@ -57,7 +57,7 @@ class Home(Entry):
                 return
 
     def get_all_following_questions(self):
-        """ Return: A [list] of following questions eids. """
+        """ Return a [list] of following questions eids. """
         q = self.get_following_questions()
         eids = []
         try:
@@ -94,7 +94,7 @@ class Home(Entry):
                 return
 
     def get_all_following_collections(self):
-        """ Return: A [list] of following collection eids. """
+        """ Return a [list] of following collection eids. """
         c = self.get_following_collections()
         eids = []
         try:

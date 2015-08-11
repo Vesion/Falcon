@@ -19,7 +19,7 @@ class Entry():
     NOTE:
         All of get_* APIs in tool classes are NOT getting an entry,
         but getting text|eid|eidlist|dict, for performance regrading.
-        Use that Entry(session, eid) to manually get an entry instance indeed
+        Use that Entry(session, eid) to manually get an entry content indeed
     API: encode2Character
     Wrapper: getContent, getSoup
     """
@@ -30,7 +30,8 @@ class Entry():
         self.session = session
 
         # get the entire url with host and entry id
-        self.url = HOST_URL + eid
+        self.eid = eid
+        self.url = HOST_URL + self.eid
 
         # get the soup after getting content
         # IF url not provided, get homepage entry
