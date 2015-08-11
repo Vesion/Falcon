@@ -29,7 +29,7 @@ class Home(Entry):
         return int(num.group(0))
 
     def get_following_questions(self):
-        """ A generator that yield a question eid per next().  """
+        """ A generator yields a question eid per next().  """
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
         questions = soup.find_all('div', class_ = 'zm-profile-section-item zg-clear')
@@ -68,7 +68,7 @@ class Home(Entry):
             return eids
 
     def get_following_collections(self):
-        """ A generator that yield a collection eid per nex(). """
+        """ A generator yields a collection eid per nex(). """
         rsp = self.session.get(Get_FC_URL)
         soup = self.getSoup(rsp.content)
         collections = soup.find_all('div', class_ = 'zm-item')

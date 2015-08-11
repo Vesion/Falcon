@@ -29,7 +29,7 @@ class Collection(Entry):
                         .a['href']
 
     def _get_items(self, itype):
-        """ A generator that yield a question|answer eid per next(). """
+        """ A generator yields a question|answer eid per next(). """
 
         def get_page_items(soup):
             items = soup.find_all('div', class_='zm-item')
@@ -89,6 +89,43 @@ class Collection(Entry):
         num = self.soup.find('a', href = self.eid + "/followers")\
                         .get_text(strip = True).encode(CODE)
         return int(num)
+
+    def get_followers(self):
+        """ A generator yields a user eid per next(). """
+        rsp = self.session.get(self.url + "/followers")
+        soup = self.getSoup(rsp.content)
+        followers = soup.find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+        if not followers:
+            return
+        i, follower = 0, None
+        for follower in followers:
+            i += 1
+            yield follower.a['href']
+        while not i % Col_Followers_Item_Num:
+            data = {
+                    'offset' : i,
+                    '_xsrf'  : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(self.url + "/followers", data = data)
+            if rsp.json()['r'] == 0:
+                followers = self.getSoup(rsp.json()['msg'][1])\
+                        .find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+                for follower in followers:
+                    i += 1
+                    yield follower.a['href']
+            else:
+                return
+
+    def get_all_followers(self):
+        """ Return a [list] of user eids. """
+        f = self.get_followers()
+        eids = []
+        try:
+            while True:
+                eids.append(f.next())
+        except StopIteration: pass
+        finally:
+            return eids
 
     def follow_it(self):
         """ Follow this collection. Return status code. """

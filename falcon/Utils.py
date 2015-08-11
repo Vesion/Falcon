@@ -67,3 +67,4 @@ Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 ## Numbers
 FQ_Item_Num = 20 # Home
 FC_Item_Num = 20 # Home
+Col_Followers_Item_Num = 20 # Collection
