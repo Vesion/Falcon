@@ -58,12 +58,12 @@ class Collection(Entry):
 
     def _get_all_items(self, itype):
         """ Return a [list] of question|answer eids. """
-        q = self._get_items('question') if itype == 'question' else\
+        i = self._get_items('question') if itype == 'question' else\
             self._get_items('answer')
         eids = []
         try:
             while True:
-                eids.append(q.next())
+                eids.append(i.next())
         except StopIteration: pass
         finally:
             return eids
@@ -101,7 +101,7 @@ class Collection(Entry):
         for follower in followers:
             i += 1
             yield follower.a['href']
-        while not i % Col_Followers_Item_Num:
+        while not i % Page_Items_Num:
             data = {
                     'offset' : i,
                     '_xsrf'  : self.session.getCookie()['_xsrf']

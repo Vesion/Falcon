@@ -39,7 +39,7 @@ class Home(Entry):
         for question in questions:
             i += 1
             yield question.find('a')['href']
-        while not i % FQ_Item_Num:
+        while not i % Page_Items_Num:
             data = {
                 'method' : 'next',
                 'params' : json.dumps({
@@ -78,7 +78,7 @@ class Home(Entry):
         for collection in collections:
             i += 1
             yield collection.h2.a['href']
-        while not i % FC_Item_Num:
+        while not i % Page_Items_Num:
             data = {
                     'offset' : i,
                     'start'  : collection['id'].split('-')[-1],
