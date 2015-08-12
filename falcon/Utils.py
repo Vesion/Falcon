@@ -10,7 +10,11 @@
 
 # -*- coding: utf-8 -*-
 
-# Packages and modules for common use 
+#
+# MODULES
+#
+
+## Modules for common use 
 import os
 import sys
 import platform
@@ -18,10 +22,10 @@ import shutil
 import json
 import re
 
-# Module for HTTP requests
+## Module for HTTP requests
 import requests
 
-# Module for HTML parsing, try to use lxml engine
+## Module for HTML parsing, try to use lxml engine
 from bs4 import BeautifulSoup as BS
 try:
     __import__('lxml')
@@ -29,7 +33,9 @@ try:
 except ImportError:
     BeautifulSoup = lambda makeup: BS(makeup, 'html.parser')
 
+#
 # CONSTANTS
+#
 
 ## Status Code
 SUCCESS = 1
@@ -67,3 +73,8 @@ Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 ## Numbers
 ### Define the number when getting the items firstly, this also defines the offset of more items post request with AJAX.
 Page_Items_Num = 20
+
+#
+# DECORATORS
+#
+import functools
