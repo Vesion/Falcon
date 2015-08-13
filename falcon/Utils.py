@@ -70,6 +70,9 @@ Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 #Columns_Posts_Data = Column_URL + '/api/columns/{0}/posts?limit=10&offset={1}'
 #Columns_Post_Data = Column_URL + '/api/columns/{0}/posts/{1}'
 
+## REs
+Eid_RE = re.compile(r"^(/[^/]+)*$")
+
 ## Numbers
 ### Define the number when getting the items firstly, this also defines the offset of more items post request with AJAX.
 Page_Items_Num = 20
@@ -78,3 +81,11 @@ Page_Items_Num = 20
 # DECORATORS
 #
 import functools
+
+def check_eid(func):
+    @functools.wraps(func)
+    def wrapper(self, session, eid = ''):
+        if eid and Eid_RE.match(eid) is None:
+            raise ValueError('eid value error')
+        return func(self, session, eid)
+    return wrapper
