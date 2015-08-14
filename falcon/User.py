@@ -9,16 +9,13 @@
 
 # -*- coding: utf-8 -*-
 
-import sys
-import requests
-import json
-
-from Entry import Entry
+from .Utils import *
+from .Entry import Entry
 
 class User(Entry):
-    """ Tool class for getting people info """
+    """ Tool class for getting user info. """
 
-    PageSize = 20 # For answers/asks/followers/followees page
+    PageSize = 20
 
     def __init__(self, session, url):
         Entry.__init__(self, session, url)
@@ -26,22 +23,29 @@ class User(Entry):
     def get_name(self):
         """ Return user name text. """
         name = self.soup.find('div', class_ = 'title-section ellipsis').find('span', class_ = 'name')\
-                        .get_text(strip = True).encode('utf-8')
-        return self.encode2Character(name)
+                        .get_text(strip = True).encode(CODE)
+        return name
 
     def get_biography(self):
         """ Return user biography text or None. """
         bio = self.soup.find('span', class_ = 'bio')
         if bio:
-            return self.encode2Character(bio.get_text(strip = True).encode('utf-8'))
+            return bio.get_text(strip = True).encode(CODE)
         return None
 
-    def get_about_item(self, name):
-        """ Return user about item dictionary, including name text and topic url. """
+    def _get_about_item(self, name):
+        """
+        Return user about item dictionary
+        { 'name' : {
+            'text' : '...', 
+            'topic' : topic-eid
+            }
+        }
+        """
         item = {}
         text = self.soup.find('span', class_  = name + ' item')
         if text:
-            item['text'] = self.encode2Character(text.get_text(strip = True).encode('utf-8'))
+            item['text'] = text.get_text(strip = True).encode(CODE)
             topic = text.find('a')
             if topic:
                 item['topic'] = topic['href']
@@ -49,59 +53,66 @@ class User(Entry):
 
     def get_about(self):
         """
-        Return all user abouts in dictionary, including of
+        Return all user abouts in dictionary, including
         'location', 'business', 'employment', 'position', 'education', 'education-extra',
-        each has text and href.
         """
         about = {}
-        about['location'] = self.get_about_item('location')
-        about['business'] = self.get_about_item('business')
-        about['employment'] = self.get_about_item('employment')
-        about['position'] = self.get_about_item('position')
-        about['education'] = self.get_about_item('education')
-        about['education-extra'] = self.get_about_item('education-extra')
+        about['location'] = self._get_about_item('location')
+        about['business'] = self._get_about_item('business')
+        about['employment'] = self._get_about_item('employment')
+        about['position'] = self._get_about_item('position')
+        about['education'] = self._get_about_item('education')
+        about['education-extra'] = self._get_about_item('education-extra')
         return about
+
+    def get_description(self):
+        """ Return user description text or None. """
+        des = self.soup.find('div', attrs = {'data-name' : 'description'})
+        if des:
+            return des.find('span', class_ = 'content')\
+                    .get_text(strip = True).encode(CODE)
+        return None
 
     def get_num_followees(self):
         """ Return number of followees int. """
         num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[0].strong\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     def get_num_followers(self):
         """ Return number of followers int. """
         num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[1].strong\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     def get_num_agrees(self):
         """ Return number of agrees int. """
         num = self.soup.find('span', class_ = 'zm-profile-header-user-agree').strong\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     def get_num_thanks(self):
         """ Return number of thanks int. """
         num = self.soup.find('span', class_ = 'zm-profile-header-user-thanks').strong\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     def get_num_asks(self):
         """ Return number of asks int. """
         num = self.soup.find_all("span", class_ = "num")[0]\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     def get_num_answers(self):
         """ Return number of answers int. """
         num = self.soup.find_all("span", class_ = "num")[1]\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     def get_num_column_papers(self):
         """ Return number of column papers int. """
         num = self.soup.find_all("span", class_ = "num")[2]\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
 
     # generator section start #

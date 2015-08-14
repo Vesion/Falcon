@@ -91,6 +91,15 @@ def check_eid(func):
         return func(self, session, eid)
     return wrapper
 
+## Match number from string, return int.
+def return_int(func):
+    @functools.wraps(func)
+    def wrapper(self):
+        text = func(self)
+        num = Number_RE.match(text).group(1)
+        return int(num)
+    return wrapper
+
 #
 # FUNCTIONS
 #
