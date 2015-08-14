@@ -58,14 +58,7 @@ class Home(Entry):
 
     def get_all_following_questions(self):
         """ Return a [list] of following questions eids. """
-        q = self.get_following_questions()
-        eids = []
-        try:
-            while True:
-                eids.append(q.next())
-        except StopIteration: pass
-        finally:
-            return eids
+        return get_all_(self.get_following_questions)
 
     def get_following_collections(self):
         """ A generator yields a collection eid per nex(). """
@@ -95,11 +88,4 @@ class Home(Entry):
 
     def get_all_following_collections(self):
         """ Return a [list] of following collection eids. """
-        c = self.get_following_collections()
-        eids = []
-        try:
-            while True:
-                eids.append(c.next())
-        except StopIteration: pass
-        finally:
-            return eids
+        return get_all_(self.get_following_collections)

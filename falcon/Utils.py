@@ -1,4 +1,3 @@
-
 #  ________      ______                   
 #  ___  __/_____ ___  /__________________ 
 #  __  /_ _  __ `/_  /_  ___/  __ \_  __ \
@@ -82,6 +81,7 @@ Page_Items_Num = 20
 #
 import functools
 
+## When an entry initiating, check its eid whether valid.
 def check_eid(func):
     @functools.wraps(func)
     def wrapper(self, session, eid = ''):
@@ -89,3 +89,18 @@ def check_eid(func):
             raise ValueError('eid value error')
         return func(self, session, eid)
     return wrapper
+
+#
+# FUNCTIONS
+#
+
+## A framework using generator to get all entry eids
+def get_all_(gen):
+    i = gen()
+    eids = []
+    try:
+        while True:
+            eids.append(i.next())
+    except StopIteration: pass
+    finally:
+        return eids
