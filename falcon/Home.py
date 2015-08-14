@@ -18,14 +18,13 @@ class Home(Entry):
     def __init__(self, session):
         Entry.__init__(self, session)
 
+    @return_int
     def get_num_following_questions(self):
         """ Return number of following questions int. """
         rsp = self.session.get(Get_FQ_URL)
         soup = self.getSoup(rsp.content)
-        num = soup.find('span', class_ = 'zg-gray-normal')\
+        return soup.find('span', class_ = 'zg-gray-normal')\
                     .get_text(strip = True).encode(CODE)
-        num = Number_RE.match(num).group(1)
-        return int(num)
 
     def get_following_questions(self):
         """ A generator yields a question eid per next().  """

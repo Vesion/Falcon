@@ -78,12 +78,11 @@ class Collection(Entry):
         """ Return a [list] of answer eids. """
         return get_all_(self.get_answers)
 
+    @return_int
     def get_num_followers(self):
         """ Return number of followers int. """
-        num = self.soup.find('a', href = self.eid + "/followers")\
+        return self.soup.find('a', href = self.eid + "/followers")\
                         .get_text(strip = True).encode(CODE)
-        num = Number_RE.match(num).group(1)
-        return int(num)
 
     def get_followers(self):
         """ A generator yields a user eid per next(). """

@@ -73,47 +73,63 @@ class User(Entry):
                     .get_text(strip = True).encode(CODE)
         return None
 
+    @return_int
     def get_num_followees(self):
         """ Return number of followees int. """
-        num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[0].strong\
+        return self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[0].strong\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
 
+    @return_int
     def get_num_followers(self):
         """ Return number of followers int. """
-        num = self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[1].strong\
+        return self.soup.find('div', class_ = 'zm-profile-side-following zg-clear').find_all('a')[1].strong\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
+        
 
+    @return_int
     def get_num_agrees(self):
         """ Return number of agrees int. """
-        num = self.soup.find('span', class_ = 'zm-profile-header-user-agree').strong\
+        return self.soup.find('span', class_ = 'zm-profile-header-user-agree').strong\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
+        
 
+    @return_int
     def get_num_thanks(self):
         """ Return number of thanks int. """
-        num = self.soup.find('span', class_ = 'zm-profile-header-user-thanks').strong\
+        return self.soup.find('span', class_ = 'zm-profile-header-user-thanks').strong\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
+        
 
+    @return_int
     def get_num_asks(self):
         """ Return number of asks int. """
-        num = self.soup.find_all("span", class_ = "num")[0]\
+        return self.soup.find_all("span", class_ = "num")[0]\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
+        
 
+    @return_int
     def get_num_answers(self):
         """ Return number of answers int. """
-        num = self.soup.find_all("span", class_ = "num")[1]\
+        return self.soup.find_all("span", class_ = "num")[1]\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
 
-    def get_num_column_papers(self):
-        """ Return number of column papers int. """
-        num = self.soup.find_all("span", class_ = "num")[2]\
+    @return_int
+    def get_num_posts(self):
+        """ Return number of posts int. """
+        return self.soup.find_all("span", class_ = "num")[2]\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
+        
+    @return_int
+    def get_num_collections(self):
+        """ Return number of collections int. """
+        return self.soup.find_all("span", class_ = "num")[3]\
+                        .get_text(strip = True).encode(CODE)
+
+    @return_int
+    def get_num_logs(self):
+        """ Return number of logs int. """
+        return self.soup.find_all("span", class_ = "num")[4]\
+                        .get_text(strip = True).encode(CODE)
 
     # generator section start #
 
