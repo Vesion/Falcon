@@ -33,46 +33,50 @@ class Collection(Entry):
         questions = self.soup.find_all('div', class_ = 'zm-item')
         if not questions:
             return
-        i, question = 0, None
+        i, question = 2, None
         for question in questions:
-            i += 1
-            yield question.h2.a['href']
+            if question.h2: # not every item is question, most are answers
+                yield question.h2.a['href']
         while True:
-            params = {'page' : i / Page_Items_Num + 1}
+            params = {'page' : i}
+            i += 1
             rsp = self.session.get(self.url, params = params)
             soup = self.getSoup(rsp.content)
-            questions = soup.find_all('div', clas_ = 'zm-item')
+            questions = soup.find_all('div', class_ = 'zm-item')
             if questions:
                 for question in questions:
-                    i += 1
-                    yield question.h2.a['href']
-            else:
-                return
-
-    def get_answers(self):
-        """ Return generator with answer. """
-        answers = self.soup.find_all('div', class_ = 'zm-item')
-        if not answers:
-            return
-        i, answer = 0, None
-        for answer in answers:
-            i += 1
-            yield answer.find('a', class_ = 'answer-date-link')['href']
-        while True:
-            params = {'page' : i / Page_Items_Num + 1}
-            rsp = self.session.get(self.url, params = params)
-            soup = self.getSoup(rsp.content)
-            answers = soup.find_all('div', clas_ = 'zm-item')
-            if answers:
-                for answer in answers:
-                    i += 1
-                    yield answer.find('a', class_ = 'answer-date-link')['href']
+                    if question.h2: # ditto
+                        yield question.h2.a['href']
             else:
                 return
 
     def get_all_questions(self):
         """ Return a [list] of question eids. """
         return get_all_(self.get_questions)
+
+    def get_answers(self):
+        """ Return generator with answer. """
+        answers = self.soup.find_all('div', class_ = 'zm-item')
+        if not answers:
+            return
+        i, answer = 2, None
+        for answer in answers:
+            answer = answer.find('a', class_ = 'answer-date-link')
+            if answer: # some answers are shielded
+                yield answer['href']
+        while True:
+            params = {'page' : i}
+            i += 1
+            rsp = self.session.get(self.url, params = params)
+            soup = self.getSoup(rsp.content)
+            answers = soup.find_all('div', class_ = 'zm-item')
+            if answers:
+                for answer in answers:
+                    answer = answer.find('a', class_ = 'answer-date-link')
+                    if answer: # ditto
+                        yield answer['href']
+            else:
+                return
 
     def get_all_answers(self):
         """ Return a [list] of answer eids. """

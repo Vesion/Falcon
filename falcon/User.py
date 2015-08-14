@@ -131,8 +131,6 @@ class User(Entry):
         return self.soup.find_all("span", class_ = "num")[4]\
                         .get_text(strip = True).encode(CODE)
 
-    # generator section start #
-
     def get_answers(self):
         """
         First get the answer page.
