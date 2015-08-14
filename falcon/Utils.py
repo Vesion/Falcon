@@ -71,6 +71,7 @@ Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 
 ## REs
 Eid_RE = re.compile(r"^(/[^/]+)*$")
+Number_RE = re.compile(r'[^\d]*(\d+).*')
 
 ## Numbers
 ### Define the number when getting the items firstly, this also defines the offset of more items post request with AJAX.

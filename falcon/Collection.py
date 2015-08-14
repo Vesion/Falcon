@@ -82,6 +82,7 @@ class Collection(Entry):
         """ Return number of followers int. """
         num = self.soup.find('a', href = self.eid + "/followers")\
                         .get_text(strip = True).encode(CODE)
+        num = Number_RE.match(num).group(1)
         return int(num)
 
     def get_followers(self):

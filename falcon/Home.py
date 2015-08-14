@@ -24,9 +24,8 @@ class Home(Entry):
         soup = self.getSoup(rsp.content)
         num = soup.find('span', class_ = 'zg-gray-normal')\
                     .get_text(strip = True).encode(CODE)
-        # num now is "(\d+)"
-        num = re.search('\d+', num)
-        return int(num.group(0))
+        num = Number_RE.match(num).group(1)
+        return int(num)
 
     def get_following_questions(self):
         """ A generator yields a question eid per next().  """
