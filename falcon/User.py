@@ -244,3 +244,29 @@ class User(Entry):
     def get_all_answers(self):
         """ Return a [list] of answer eids. """
         return get_all_(self.get_answers)
+
+    def get_collections(self):
+        """ A generator yields a collection eid per next().  """
+        rsp = self.session.get(self.url + "/collections")
+        soup = self.getSoup(rsp.content)
+        collections = soup.find_all('div', class_ = 'zm-profile-section-item zg-clear')
+        if not collections:
+            return
+        i, collection = 2, None
+        for collection in collections:
+            yield collection.a['href']
+        while True:
+            params = {'page' : i}
+            i += 1
+            rsp = self.session.get(self.url + "/collections", params = params)
+            soup = self.getSoup(rsp.content)
+            collections = soup.find_all('div', class_ = 'zm-profile-section-item zg-clear')
+            if collections:
+                for collection in collections:
+                    yield collection.a['href']
+            else:
+                return
+
+    def get_all_collections(self):
+        """ Return a [list] of collection eids. """
+        return get_all_(self.get_collections)
