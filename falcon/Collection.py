@@ -29,7 +29,7 @@ class Collection(Entry):
                         .a['href']
 
     def get_questions(self):
-        """ Return generator with question. """
+        """ A generator yields a question eid per next().  """
         questions = self.soup.find_all('div', class_ = 'zm-item')
         if not questions:
             return
@@ -55,7 +55,7 @@ class Collection(Entry):
         return get_all_(self.get_questions)
 
     def get_answers(self):
-        """ Return generator with answer. """
+        """ A generator yields a answer eid per next().  """
         answers = self.soup.find_all('div', class_ = 'zm-item')
         if not answers:
             return
@@ -115,7 +115,7 @@ class Collection(Entry):
                 return
 
     def get_all_followers(self):
-        """ Return a [list] of user eids. """
+        """ Return a [list] of follower eids. """
         return get_all_(self.get_followers)
 
     def follow_it(self):
