@@ -63,6 +63,9 @@ Get_More_Followees_URL = HOST_URL + "/node/ProfileFolloweesListV2"
 Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"
 Follow_User_URL = HOST_URL + "/node/MemberFollowBaseV2"
 Unfollow_User_URL = Follow_User_URL
+### Topic
+Follow_Topic_URL = HOST_URL + "/node/TopicFollowBaseV2"
+Unfollow_Topic_URL = Follow_Topic_URL
 
 #Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'
@@ -82,7 +85,7 @@ Page_Items_Num = 20
 #
 
 def get_all_(gen):
-    """ A framework using generator to get all entry eids. """
+    """ An advanced fucntion using generator to get all entry eids. """
     i = gen()
     eids = []
     try:

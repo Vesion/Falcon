@@ -19,13 +19,12 @@ class User(Entry):
         Entry.__init__(self, session, url)
 
     def get_name(self):
-        """ Return user name text. """
-        name = self.soup.find('div', class_ = 'title-section ellipsis').find('span', class_ = 'name')\
+        """ Return user name string. """
+        return self.soup.find('div', class_ = 'title-section ellipsis').find('span', class_ = 'name')\
                         .get_text(strip = True).encode(CODE)
-        return name
 
     def get_biography(self):
-        """ Return user biography text or None. """
+        """ Return user biography string or None. """
         bio = self.soup.find('span', class_ = 'bio')
         if bio:
             return bio.get_text(strip = True).encode(CODE)
@@ -64,7 +63,7 @@ class User(Entry):
         return about
 
     def get_description(self):
-        """ Return user description text or None. """
+        """ Return user description string or None. """
         des = self.soup.find('div', attrs = {'data-name' : 'description'})
         if des:
             return des.find('span', class_ = 'content')\
@@ -314,7 +313,7 @@ class User(Entry):
         return get_all_(self.get_collections)
 
     def follow_me(self, action = 'follow'):
-        """ Follow|Unfollow this user. Return status code. """
+        """ Follow this user. Return status code. """
         data = {
             'params' : json.dumps({
                 'hash_id' : self.soup.find('button', attrs = {'data-follow' : 'm:button'})['data-id']

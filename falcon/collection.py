@@ -119,7 +119,7 @@ class Collection(Entry):
         return get_all_(self.get_followers)
 
     def follow_me(self, action = 'follow'):
-        """ Follow|Unfollow this collection. Return status code. """
+        """ Follow this collection. Return status code. """
         favlist_id = self.soup.find('div', id = 'zh-list-side-head')\
                                 .a['id'].split('-')[-1]
         data = {
