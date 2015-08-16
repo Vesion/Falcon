@@ -78,34 +78,11 @@ Number_RE = re.compile(r'[^\d]*(\d+).*')
 Page_Items_Num = 20
 
 #
-# DECORATORS
-#
-import functools
-
-## When an entry initiating, check its eid whether valid.
-def check_eid(func):
-    @functools.wraps(func)
-    def wrapper(self, session, eid = ''):
-        if eid and Eid_RE.match(eid) is None:
-            raise ValueError('eid value error')
-        return func(self, session, eid)
-    return wrapper
-
-## Match number from string, return int.
-def return_int(func):
-    @functools.wraps(func)
-    def wrapper(self):
-        text = func(self)
-        num = Number_RE.match(text).group(1)
-        return int(num)
-    return wrapper
-
-#
 # FUNCTIONS
 #
 
-## A framework using generator to get all entry eids
 def get_all_(gen):
+    """ A framework using generator to get all entry eids. """
     i = gen()
     eids = []
     try:
@@ -114,3 +91,25 @@ def get_all_(gen):
     except StopIteration: pass
     finally:
         return eids
+
+## DECORATORS
+import functools
+
+def check_eid(func):
+    """ When an entry initiating, check its eid whether valid. """
+    @functools.wraps(func)
+    def wrapper(self, session, eid = ''):
+        if eid and Eid_RE.match(eid) is None:
+            raise ValueError('eid value error')
+        return func(self, session, eid)
+    return wrapper
+
+def return_int(func):
+    """ Match number from string, return int. """
+    @functools.wraps(func)
+    def wrapper(self):
+        text = func(self)
+        num = Number_RE.match(text).group(1)
+        return int(num)
+    return wrapper
+
