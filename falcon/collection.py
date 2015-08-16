@@ -118,18 +118,22 @@ class Collection(Entry):
         """ Return a [list] of follower eids. """
         return get_all_(self.get_followers)
 
-    def follow_me(self):
-        """ Follow this collection. Return status code. """
+    def follow_me(self, action = 'follow'):
+        """ Follow|Unfollow this collection. Return status code. """
         favlist_id = self.soup.find('div', id = 'zh-list-side-head')\
                                 .a['id'].split('-')[-1]
         data = {
             'favlist_id' : favlist_id,
             '_xsrf'      : self.session.getCookie()['_xsrf']
             }
-        rsp = self.session.post(Follow_Collection_URL, data)
+        url = Follow_Collection_URL if action == 'follow' else\
+                Unfollow_Collection_URL
+        rsp = self.session.post(url, data)
         if rsp.status_code == requests.codes.ok:
-            print "Follow this collection successfully!"
             return SUCCESS
         else:
-            print "Fail to follow this collection."
             return FAILURE
+
+    def unfollow_me(self):
+        """ Unfollow this collection. Return status code. """
+        return self.follow_me('unfollow')
