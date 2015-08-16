@@ -131,6 +131,12 @@ class User(Entry):
         return self.soup.find('a', href = self.eid + '/topics').strong\
                         .get_text(strip = True).encode(CODE)
 
+    @return_int
+    def get_num_peeks(self):
+        """ Return number of users who ever peeked int. """
+        return self.soup.find_all('div', class_ = 'zm-side-section-inner')[-1].strong\
+                        .get_text(strip = True).encode(CODE)
+
     def get_followees(self):
         """ A generator yields a followee eid per next().  """
         rsp = self.session.get(self.url + "/followees")
