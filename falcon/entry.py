@@ -9,8 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-from .Utils import *
-from .Session import Session
+from .utils import *
+from .session import Session
 
 class Entry():
     """

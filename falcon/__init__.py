@@ -16,13 +16,13 @@ __license__ = "The MIT License (MIT)"
 __copyright__ = "Copyright 2015 Shine Xu"
 
 
-from .Session import Session
+from .session import Session
 
-from .Entry import Entry
-from .Home import Home
-from .Answer import Answer
-from .Question import Question
-from .Topic import Topic
-from .User import User
-from .Collection import Collection
-from .Column import Column
+from .entry import Entry
+from .home import Home
+from .answer import Answer
+from .question import Question
+from .topic import Topic
+from .user import User
+from .collection import Collection
+from .column import Column

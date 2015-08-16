@@ -9,11 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-import sys
-import requests
-import json
-
-from Entry import Entry
+from .utils import *
+from .entry import Entry
 
 class Question(Entry):
     """ Tool class for getting question info """

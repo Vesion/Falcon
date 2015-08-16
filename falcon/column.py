@@ -9,12 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-import re
-
-from Entry import Entry
-
-import requests
-from bs4 import BeautifulSoup
+from .utils import *
+from .entry import Entry
 
 class Column(Entry):
     """ Tool class for getting column info """

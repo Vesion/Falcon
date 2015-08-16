@@ -9,8 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-from .Utils import *
-from .Entry import Entry
+from .utils import *
+from .entry import Entry
 
 class Home(Entry):
     """ Tool class for getting homepage info. """

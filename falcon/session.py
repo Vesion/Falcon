@@ -12,7 +12,7 @@
 import time
 import ConfigParser
 
-from .Utils import *
+from .utils import *
 
 class Session():
     """ 

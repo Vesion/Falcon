@@ -9,8 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-from .Utils import *
-from .Entry import Entry
+from .utils import *
+from .entry import Entry
 
 class Collection(Entry):
     """ Tool class for getting collection info. """

@@ -9,7 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-from Entry import Entry
+from .utils import *
+from .entry import Entry
 
 class Topic(Entry):
     """ Tool class for getting topic info """

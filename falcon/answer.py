@@ -9,9 +9,8 @@
 
 # -*- coding: utf-8 -*-
 
-import re
-
-from Entry import Entry
+from .utils import *
+from .entry import Entry
 
 class Answer(Entry):
     """ Tool class for getting answer info """
