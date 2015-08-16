@@ -270,3 +270,20 @@ class User(Entry):
     def get_all_collections(self):
         """ Return a [list] of collection eids. """
         return get_all_(self.get_collections)
+
+    def follow_me(self):
+        """ Follow this user. Return status code. """
+        data = {
+            'method' : 'follow_member',
+            'params' : json.dumps({
+                'hash_id' : self.soup.find('button', attrs = {'data-follow' : 'm:button'})['data-id']
+                }),
+            '_xsrf' : self.session.getCookie()['_xsrf']
+            }
+        rsp = self.session.post(Follow_User_URL, data)
+        if rsp.status_code == requests.codes.ok:
+            print "Follow this user successfully!"
+            return SUCCESS
+        else:
+            print "Fail to follow this user."
+            return FAILURE

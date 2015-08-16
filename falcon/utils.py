@@ -61,8 +61,8 @@ Unfollow_Collection_URL = HOST_URL + "/collection/unfollow"
 ### User
 Get_More_Followees_URL = HOST_URL + "/node/ProfileFolloweesListV2"
 Get_More_Followers_URL = HOST_URL + "/node/ProfileFollowersListV2"
-#Get_Profile_Card_URL = HOST_URL + "/node/MemberProfileCardV2"
-#Get_More_Answer_URL = HOST_URL + "/node/QuestionAnswerListV2"
+Follow_User_URL = HOST_URL + "/node/MemberFollowBaseV2"
+Unfollow_User_URL = Follow_User_URL
 
 #Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'

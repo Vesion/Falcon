@@ -118,7 +118,7 @@ class Collection(Entry):
         """ Return a [list] of follower eids. """
         return get_all_(self.get_followers)
 
-    def follow_it(self):
+    def follow_me(self):
         """ Follow this collection. Return status code. """
         favlist_id = self.soup.find('div', id = 'zh-list-side-head')\
                                 .a['id'].split('-')[-1]
@@ -131,5 +131,5 @@ class Collection(Entry):
             print "Follow this collection successfully!"
             return SUCCESS
         else:
-            print "Fail to follow this collection"
+            print "Fail to follow this collection."
             return FAILURE
