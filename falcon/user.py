@@ -98,31 +98,37 @@ class User(Entry):
     @return_int
     def get_num_asks(self):
         """ Return number of asks int. """
-        return self.soup.find_all("span", class_ = "num")[0]\
+        return self.soup.find_all('span', class_ = 'num')[0]\
                         .get_text(strip = True).encode(CODE)
 
     @return_int
     def get_num_answers(self):
         """ Return number of answers int. """
-        return self.soup.find_all("span", class_ = "num")[1]\
+        return self.soup.find_all('span', class_ = 'num')[1]\
                         .get_text(strip = True).encode(CODE)
 
     @return_int
     def get_num_posts(self):
         """ Return number of posts int. """
-        return self.soup.find_all("span", class_ = "num")[2]\
+        return self.soup.find_all('span', class_ = 'num')[2]\
                         .get_text(strip = True).encode(CODE)
         
     @return_int
     def get_num_collections(self):
         """ Return number of collections int. """
-        return self.soup.find_all("span", class_ = "num")[3]\
+        return self.soup.find_all('span', class_ = 'num')[3]\
                         .get_text(strip = True).encode(CODE)
 
     @return_int
     def get_num_logs(self):
         """ Return number of logs int. """
-        return self.soup.find_all("span", class_ = "num")[4]\
+        return self.soup.find_all('span', class_ = 'num')[4]\
+                        .get_text(strip = True).encode(CODE)
+
+    @return_int
+    def get_num_topics(self):
+        """ Return numbner of following topics int. """
+        return self.soup.find('a', href = self.eid + '/topics').strong\
                         .get_text(strip = True).encode(CODE)
 
     def get_followees(self):
@@ -192,6 +198,36 @@ class User(Entry):
     def get_all_followers(self):
         """ Return a [list] of follower eids. """
         return get_all_(self.get_followers)
+
+    def get_topics(self):
+        """ A generator yields a topic eid per next().  """
+        rsp = self.session.get(self.url + "/topics")
+        soup = self.getSoup(rsp.content)
+        topics = soup.find_all('div', class_ = 'zm-profile-section-item zg-clear')
+        if not topics:
+            return
+        i, topic = 0, None
+        for topic in topics:
+            i += 1
+            yield topic.a['href']
+        while not i % Page_Items_Num:
+            data = {
+                'start' : 0,
+                'offset': i,
+                '_xsrf' : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(self.url + "/topics", data = data)
+            if rsp.json()['r'] == 0:
+                topics = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-profile-section-item zg-clear')
+                for topic in topics:
+                    i += 1
+                    yield topic.a['href']
+            else:
+                return
+
+    def get_all_topics(self):
+        """ Return a [list] of following topic eids. """
+        return get_all_(self.get_topics)
         
     def get_asks(self):
         """ A generator yields a question eid per next().  """
