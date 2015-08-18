@@ -66,6 +66,8 @@ Unfollow_User_URL = Follow_User_URL
 ### Topic
 Follow_Topic_URL = HOST_URL + "/node/TopicFollowBaseV2"
 Unfollow_Topic_URL = Follow_Topic_URL
+### Question
+Get_More_Answers_URL = HOST_URL + "/node/QuestionAnswerListV2"
 
 #Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'
@@ -77,8 +79,8 @@ Eid_RE = re.compile(r"^(/[^/]+)*$")
 Number_RE = re.compile(r'[^\d]*(\d+).*')
 
 ## Numbers
-### Define the number when getting the items firstly, this also defines the offset of more items post request with AJAX.
-Page_Items_Num = 20
+Page_Items_Num = 20 # Define the number when getting the items firstly, this also defines the offset of more items post request with AJAX.
+Page_Answers_Num = 50 # Used in Question
 
 #
 # FUNCTIONS

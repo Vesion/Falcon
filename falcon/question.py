@@ -31,118 +31,104 @@ class Question(Entry):
         return self.soup.find('div', id = 'zh-question-detail').div\
                                 .get_text(strip = True).encode(CODE)
 
+    @return_int
     def get_num_answers(self):
-        """ Return number of answers int or 0. """
+        """ Return number of answers int. """
         num = self.soup.find('h3', id = 'zh-question-answer-num')
         if num:
-            return int(num['data-num'])
-        return 0
+            return num.get_text(strip = True).encode(CODE)
+        return '0'
 
+    @return_int
     def get_num_followers(self):
         """ Return number of followers int. """
-        num = self.soup.find('div', class_ = 'zh-question-followers-sidebar').div.a.strong\
+        return self.soup.find('div', class_ = 'zh-question-followers-sidebar').div.a.strong\
                         .get_text(strip = True).encode(CODE)
-        return int(num)
     
     def get_topics(self):
-        """ Return in topics url list. """
-        urls = []
-        topic = self.soup.find('a', class_ = 'zm-item-tag')
-        while topic:
-            url = topic['href']
-            urls.append(url)
-            topic = topic.find_next_sibling('a', class_ = 'zm-item-tag')
-        return urls
+        """ Return a [list] of in-topic eids. """
+        eids = []
+        topics = self.soup.find_all('a', class_ = 'zm-item-tag')
+        for topic in topics:
+            eids.append(topic['href'])
+        return eids
         
     def get_related_questions(self):
-        """ Return related questions url list. """
-        urls = []
-        question = self.soup.find('ul', itemprop = 'relatedQuestion').li
-        while question:
-            url = question.a['href']
-            urls.append(url)
-            question = question.find_next_sibling('li')
-        return urls
-
-    # generator section start #
+        """ Return a [list] of related question eids. """
+        eids = []
+        questions = self.soup.find_all('li', itemprop = 'itemListElement')
+        for question in questions:
+            eids.append(question.a['href'])
+        return eids
 
     def get_answers(self):
-        """
-        The original page has `AnswerSize` answers at most for search.
-        Then use AJAX post to get `AnswerSize` answers each time until reach max.
-        """
-        answer = None
-        answer_list = []
-        a_url = self.session._HOST_ + "/node/QuestionAnswerListV2"
-
-        for i in xrange(self.get_num_answers()):
-            if i == 0:
-                answer = self.soup.find('div', class_ = 'zm-item-answer ')
-            elif i < Question.AnswerSize:
-                answer = answer.find_next_sibling('div', class_ = 'zm-item-answer ')
+        """ A generator yields a answer eid per next().  """
+        answers = self.soup.find_all('div', class_ = 'zm-item-answer ')
+        if not answers:
+            return
+        i, answer = 0, None
+        for answer in answers:
+            i += 1
+            answer = answer.find('a', class_ = 'answer-date-link')
+            if answer: # some answers are shielded
+                yield answer['href']
+        while not i % Page_Answers_Num:
+            data = {
+                'method' : 'next',
+                'params' : json.dumps({
+                    'url_token' : self.eid.split('/')[-1],
+                    'pagesize' : Page_Answers_Num,
+                    'offset' : i
+                    }),
+                '_xsrf' : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(Get_More_Answers_URL, data = data)
+            if rsp.json()['r'] == 0:
+                answers = rsp.json()['msg']
+                for answer in answers:
+                    i += 1
+                    answer = self.getSoup(answer).find('a', class_ = 'answer-date-link')
+                    if answer: # ditto
+                        yield answer['href']
             else:
-                if not i % Question.AnswerSize:
-                    data = {
-                        'method' : 'next',
-                        'params' : json.dumps({
-                            'url_token' : self.get_id(),
-                            'pagesize' : Question.AnswerSize,
-                            'offset' : Question.AnswerSize * (i / Question.AnswerSize)
-                            }),
-                        '_xsrf' : self.session.getCookie()['_xsrf']
-                        }
-                    rsp = self.session.post(a_url, data)
-                    answer_list = rsp.json()["msg"]
-                answer = self.getSoup(answer_list[i % Question.AnswerSize]).find('div')
-            url = "/question/{0}/answer/{1}".format(self.getId(), answer['data-atoken'])
-            yield url
-        print "No more answers."
+                return
+
+    def get_all_answers(self):
+        """ Return a [list] of answer eids. """
+        return get_all_(self.get_answers)
 
     def get_followers(self):
-        """
-        First get the follower page.
-        The original page has `FollowerSize` followers at most for search.
-        Then use AJAX post to get `FollowerSize` followers each time until reach max.
-        """
-        follower = None
-        soup = None
-        f_url = self.session._HOST_ + self.url + "/followers"
-
-        rsp = self.session.get(f_url)
+        """ A generator yields a follower eid per next().  """
+        rsp = self.session.get(self.url + "/followers")
         soup = self.getSoup(rsp.content)
-
-        for i in xrange(self.get_num_followers()):
-            if i == 0:
-                follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+        followers = soup.find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+        if not followers:
+            return
+        i, follower = 0, None
+        for follower in followers:
+            i += 1
+            if follower.find('a'): # for anonymous user
+                yield follower.a['href']
+        while not i % Page_Items_Num:
+            data = {
+                'offset' : i,
+                'start'  : 0,
+                '_xsrf'  : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(self.url + "/followers", data = data)
+            if rsp.json()['r'] == 0:
+                followers = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+                for follower in followers:
+                    i += 1
+                    if follower.find('a'): # ditto
+                        yield follower.a['href']
             else:
-                if not i % Question.FollowerSize:
-                    data = {
-                        'start' : 0,
-                        'offset' : Question.FollowerSize * (i / Question.FollowerSize),
-                        '_xsrf' : self.session.getCookie()['_xsrf']
-                        }
-                    rsp = self.session.post(f_url, data)
-                    soup = self.getSoup(rsp.json()["msg"][1])
-                    follower = soup.find('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
-                else:
-                    follower = follower.find_next_sibling('div')
-            link = follower.find('a', class_ = 'zm-item-link-avatar')
-            if link:
-                url = link['href']
-                yield url
-            else:
-                yield None # anonymous user
-        print "No more followers"
+                return
 
-    # generator section end #
+    def get_all_followers(self):
+        """ Return a [list] of follower eids. """
+        return get_all_(self.get_followers)
 
-    def get_all_answers(self, limit = sys.maxsize):
-        """ Return limit/all answers url list. """
-        ans = self.get_answers()
-        return [ans.next() for i in xrange(min(limit, self.get_num_answers()))]
-
-    def get_all_followers(self, limit = sys.maxsize):
-        """ Return limit/all followers url list, None for anonymous user. """
-        fs = self.get_followers()
-        return [fs.next() for i in xrange(min(limit, self.get_num_followers()))]
-        
+    # TODO #
+    def get_all_collapsed_answers():
+        """ """
