@@ -69,7 +69,7 @@ class Session():
             if rsp.status_code == requests.codes.ok:
                 return rsp.json()['r'], rsp.json()['msg']
             else:
-                sys.exit("HTTP error code: {0}".format(rsp.status_code)) 
+                sys.exit("Login failed: {0}".format(rsp.status_code)) 
         
         # closure function for getting captcha image
         def get_captcha():

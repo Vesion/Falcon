@@ -38,13 +38,11 @@ class Entry():
         self.soup = self.getSoup(self.getContent(self.url))
 
     def getContent(self, url):
-        try:
-            rsp = self.session.get(url)
-        except requests.exceptions.RequestException as e:
-            print e.message()
-        else:
+        rsp = self.session.get(url)
+        if rsp.status_code == requests.codes.ok:
             return rsp.content
-        return None
+        else:
+            sys.exit("Get entry failed: {0}".format(rsp.status_code)) 
     
     def getSoup(self, content):
         return BeautifulSoup(content)

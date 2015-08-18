@@ -13,7 +13,7 @@ from .utils import *
 from .entry import Entry
 
 class Question(Entry):
-    """ Tool class for getting question info """
+    """ Tool class for getting question info. """
 
     AnswerSize = 50 # For answers page
     FollowerSize = 20 # For followers page
@@ -22,16 +22,14 @@ class Question(Entry):
         Entry.__init__(self, session, url)
 
     def get_title(self):
-        """ Return question title text. """
-        title = self.soup.find('h2', class_ = 'zm-item-title')\
-                        .get_text(strip = True).encode('utf-8')
-        return self.encode2Character(title)
+        """ Return question title string. """
+        return self.soup.find('div', id = 'zh-question-title').h2\
+                        .get_text(strip = True).encode(CODE)
 
     def get_description(self):
-        """ Return question description text. """
-        description = self.soup.find('div', id = 'zh-question-detail').div\
-                                .get_text(strip = True).encode('utf-8')
-        return self.encode2Character(description)
+        """ Return question description string. """
+        return self.soup.find('div', id = 'zh-question-detail').div\
+                                .get_text(strip = True).encode(CODE)
 
     def get_num_answers(self):
         """ Return number of answers int or 0. """
@@ -43,7 +41,7 @@ class Question(Entry):
     def get_num_followers(self):
         """ Return number of followers int. """
         num = self.soup.find('div', class_ = 'zh-question-followers-sidebar').div.a.strong\
-                        .get_text(strip = True).encode('utf-8')
+                        .get_text(strip = True).encode(CODE)
         return int(num)
     
     def get_topics(self):
