@@ -68,6 +68,7 @@ Follow_Topic_URL = HOST_URL + "/node/TopicFollowBaseV2"
 Unfollow_Topic_URL = Follow_Topic_URL
 ### Question
 Get_More_Answers_URL = HOST_URL + "/node/QuestionAnswerListV2"
+Get_Collapsed_Answers_URL = HOST_URL + "/node/QuestionCollapsedAnswerListV2"
 
 #Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'

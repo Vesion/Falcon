@@ -61,6 +61,38 @@ class Question(Entry):
             eids.append(question.a['href'])
         return eids
 
+    def get_followers(self):
+        """ A generator yields a follower eid per next().  """
+        rsp = self.session.get(self.url + "/followers")
+        soup = self.getSoup(rsp.content)
+        followers = soup.find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+        if not followers:
+            return
+        i, follower = 0, None
+        for follower in followers:
+            i += 1
+            if follower.find('a'): # for anonymous user
+                yield follower.a['href']
+        while not i % Page_Items_Num:
+            data = {
+                'offset' : i,
+                'start'  : 0,
+                '_xsrf'  : self.session.getCookie()['_xsrf']
+                }
+            rsp = self.session.post(self.url + "/followers", data = data)
+            if rsp.json()['r'] == 0:
+                followers = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
+                for follower in followers:
+                    i += 1
+                    if follower.find('a'): # ditto
+                        yield follower.a['href']
+            else:
+                return
+
+    def get_all_followers(self):
+        """ Return a [list] of follower eids. """
+        return get_all_(self.get_followers)
+
     def get_answers(self):
         """ A generator yields a answer eid per next().  """
         answers = self.soup.find_all('div', class_ = 'zm-item-answer ')
@@ -97,38 +129,19 @@ class Question(Entry):
         """ Return a [list] of answer eids. """
         return get_all_(self.get_answers)
 
-    def get_followers(self):
-        """ A generator yields a follower eid per next().  """
-        rsp = self.session.get(self.url + "/followers")
-        soup = self.getSoup(rsp.content)
-        followers = soup.find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
-        if not followers:
-            return
-        i, follower = 0, None
-        for follower in followers:
-            i += 1
-            if follower.find('a'): # for anonymous user
-                yield follower.a['href']
-        while not i % Page_Items_Num:
-            data = {
-                'offset' : i,
-                'start'  : 0,
-                '_xsrf'  : self.session.getCookie()['_xsrf']
+    def get_all_collapsed_answers(self):
+        """ Return a [list] of shielded answer eids. """
+        eids = []
+        if self.soup.find('div', attrs = {'id' : 'zh-question-collapsed-link', 'style' : 'display:'}):
+            params = {
+                'params' : json.dumps({
+                    'question_id':self.soup.find('div', id = 'zh-question-detail')['data-resourceid']})
                 }
-            rsp = self.session.post(self.url + "/followers", data = data)
-            if rsp.json()['r'] == 0:
-                followers = self.getSoup(rsp.json()['msg'][1]).find_all('div', class_ = 'zm-profile-card zm-profile-section-item zg-clear no-hovercard')
-                for follower in followers:
-                    i += 1
-                    if follower.find('a'): # ditto
-                        yield follower.a['href']
-            else:
-                return
-
-    def get_all_followers(self):
-        """ Return a [list] of follower eids. """
-        return get_all_(self.get_followers)
-
-    # TODO #
-    def get_all_collapsed_answers():
-        """ """
+            rsp = self.session.get(Get_Collapsed_Answers_URL, params = params)
+            soup = self.getSoup(rsp.content)
+            answers = soup.find_all('div', class_ = 'zm-item-answer ')
+            for answer in answers:
+                answer = answer.find('a', class_ = 'answer-date-link')
+                if answer: # some answers are shielded
+                    eids.append(answer['href'])
+        return eids
