@@ -45,8 +45,30 @@ class Answer(Entry):
             return num.get_text(strip = True).encode(CODE)
         return '0'
 
+    def get_voters(self):
+        """ A generator yields a voted user eid per next().  """
+        aid = self.soup.find('div', class_='zm-item-answer')['data-aid']
+        url = HOST_URL + "/answer/{0}/voters_profile".format(aid)
+        while url:
+            rsp = self.session.get(url) 
+            voters = rsp.json()['payload']
+            for voter in voters:
+                voter = self.getSoup(voter).a
+                if voter: # for anonymous user
+                    yield voter['href']
+            url = HOST_URL + rsp.json()['paging']['next']
+
+    def get_all_voters(self):
+        """ Return a [list] of voted user eids. """
+        return get_all_(self.get_voters)
+
     def get_text_content(self):
         """ Return content text (no image link). """
         text = self.soup.find('div', class_ = ' zm-editable-content clearfix')\
                         .get_text(strip = 'utf-8').encode('utf-8')
         return self.encode2Character(text)
+
+    # TODO #
+
+    def get_comments(sefl):
+        """ """
