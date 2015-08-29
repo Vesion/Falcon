@@ -115,7 +115,9 @@ def return_int(func):
     @functools.wraps(func)
     def wrapper(self):
         text = func(self)
-        num = Number_RE.match(text).group(1)
-        return int(num)
+        num = Number_RE.match(text)
+        if num:
+            return int(num.group(1))
+        return 0
     return wrapper
 
