@@ -42,8 +42,10 @@ class Question(Entry):
     @return_int
     def get_num_followers(self):
         """ Return number of followers int. """
-        return self.soup.find('div', class_ = 'zh-question-followers-sidebar').div.a.strong\
-                        .get_text(strip = True).encode(CODE)
+        num = self.soup.find('div', class_ = 'zh-question-followers-sidebar').div.a
+        if num:
+            return num.strong.get_text(strip = True).encode(CODE)
+        return ''
     
     def get_topics(self):
         """ Return a [list] of in-topic eids. """

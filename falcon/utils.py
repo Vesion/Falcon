@@ -75,6 +75,10 @@ Unfollow_Question_URL = Follow_Question_URL
 Vote_Neutral_Answer_URL = HOST_URL + "/node/AnswerVoteBarV2"
 Vote_Up_Answer_URL = Vote_Neutral_Answer_URL
 Vote_Down_Answer_URL = Vote_Neutral_Answer_URL
+Thanks_Answer_URL = HOST_URL + "/answer/thanks"
+Cancel_Thanks_Answer_URL = HOST_URL + "/answer/cancel_thanks"
+Helpful_Answer_URL = HOST_URL + "/answer/helpful"
+Not_Helpful_Answer_URL = HOST_URL + "/answer/not_helpful"
 
 #Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'

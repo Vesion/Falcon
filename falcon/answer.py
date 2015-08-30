@@ -85,6 +85,30 @@ class Answer(Entry):
         """ Vote down this answer. Return status code. """
         return self.vote_neutral('vote_down')
 
+    def thanks(self, url = Thanks_Answer_URL):
+        """ Thanks this answer. Return status code. """
+        data = {
+            'aid' : self.soup.find('div', class_='zm-item-answer')['data-aid'],
+            '_xsrf'  : self.session.getCookie()['_xsrf'],
+            }
+        rsp = self.session.post(url, data)
+        if rsp.status_code == requests.codes.ok:
+            return SUCCESS
+        else:
+            return FAILURE
+
+    def cancel_thanks(self):
+        """ Cancel thanks this answer. Return status code. """
+        return self.thanks(Cancel_Thanks_Answer_URL)
+
+    def helpful(self, url = Helpful_Answer_URL):
+        """ This answer is helpful to me. Return status code. """
+        return self.thanks(Helpful_Answer_URL)
+
+    def not_helpful(self):
+        """ This answer is not helpful to me. Return status code. """
+        return self.thanks(Not_Helpful_Answer_URL)
+
     def get_text_content(self):
         """ Return content text (no image link). """
         text = self.soup.find('div', class_ = ' zm-editable-content clearfix')\
