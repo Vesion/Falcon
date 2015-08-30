@@ -29,7 +29,7 @@ class Topic(Entry):
         a = self.soup.find('div', class_ = 'zm-topic-side-followers-info').a
         if a:
             return a.get_text(strip = True).encode('utf-8')
-        return '0' # ready for return_int
+        return ''
 
     def get_description(self):
         """ Return description string or None. """

@@ -43,7 +43,7 @@ class Answer(Entry):
         num = self.soup.find('a', href = self.eid + '/collections');
         if num:
             return num.get_text(strip = True).encode(CODE)
-        return '0'
+        return ''
 
     def get_voters(self):
         """ A generator yields a voted user eid per next().  """

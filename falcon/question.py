@@ -37,7 +37,7 @@ class Question(Entry):
         num = self.soup.find('h3', id = 'zh-question-answer-num')
         if num:
             return num.get_text(strip = True).encode(CODE)
-        return '0'
+        return ''
 
     @return_int
     def get_num_followers(self):
