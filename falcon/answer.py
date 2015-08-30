@@ -109,11 +109,26 @@ class Answer(Entry):
         """ This answer is not helpful to me. Return status code. """
         return self.thanks(Not_Helpful_Answer_URL)
 
-    def get_text_content(self):
-        """ Return content text (no image link). """
-        text = self.soup.find('div', class_ = ' zm-editable-content clearfix')\
-                        .get_text(strip = 'utf-8').encode('utf-8')
-        return self.encode2Character(text)
+    def get_content(self):
+        """ Save answer content into local files, only support html currently. """
+        content = self.soup.find('div', class_ = ' zm-editable-content clearfix')
+        soup = BeautifulSoup('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"></head><body></body></html>')
+        soup.body.append(content)
+
+        for noscript in soup.find_all('noscript'):
+            noscript.extract()
+        for icon in soup.find_all("i", class_='icon-external'):
+            icon.extract()
+        for img in soup.find_all('img'):
+            if img.has_attr('data-actualsrc'):
+                img['src'] = "http://" + img['data-actualsrc'][2:]
+            elif img.has_attr('eeimg'):
+                img['src'] = "http://" + img['src'][2:]
+
+        content = soup.prettify()
+        filename = self.eid.split('/')[-1] + ".html"
+        with open(filename, 'wb') as f:
+            f.write(content.encode('utf-8'))
 
     # TODO #
 
