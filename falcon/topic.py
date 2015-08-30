@@ -68,16 +68,15 @@ class Topic(Entry):
         """ Return a [list] of follower eids. """
         return get_all_(self.get_followers)
 
-    def follow_me(self, action = 'follow'):
+    def follow_me(self, action = 'follow_topic'):
         """ Follow this topic. Return status code. """
         data = {
             'params' : json.dumps({
                 'topic_id' : self.soup.find('div', id = 'zh-topic-desc')['data-resourceid']
                 }),
-            '_xsrf' : self.session.getCookie()['_xsrf']
+            '_xsrf'  : self.session.getCookie()['_xsrf'],
+            'method' : action
             }
-        data['method'] = 'follow_topic' if action == 'follow' else\
-                        'unfollow_topic'
         rsp = self.session.post(Follow_Topic_URL, data)
         if rsp.status_code == requests.codes.ok:
             return SUCCESS
@@ -86,7 +85,7 @@ class Topic(Entry):
 
     def unfollow_me(self):
         """ Unfollow this topic, Return status code. """
-        return self.follow_me('unfollow')
+        return self.follow_me('unfollow_topic')
 
     # TODO #
 

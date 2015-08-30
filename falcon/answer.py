@@ -62,6 +62,29 @@ class Answer(Entry):
         """ Return a [list] of voted user eids. """
         return get_all_(self.get_voters)
 
+    def vote_neutral(self, action = 'vote_neutral'):
+        """ Vote neutral this answer. Return status code. """
+        data = {
+            'params' : json.dumps({
+                'answer_id' : self.soup.find('div', class_='zm-item-answer')['data-aid']
+                }),
+            '_xsrf'  : self.session.getCookie()['_xsrf'],
+            'method' : action
+            }
+        rsp = self.session.post(Vote_Neutral_Answer_URL, data)
+        if rsp.status_code == requests.codes.ok:
+            return SUCCESS
+        else:
+            return FAILURE
+
+    def vote_up(self):
+        """ Vote up this answer. Return status code. """
+        return self.vote_neutral('vote_up')
+
+    def vote_down(self):
+        """ Vote down this answer. Return status code. """
+        return self.vote_neutral('vote_down')
+
     def get_text_content(self):
         """ Return content text (no image link). """
         text = self.soup.find('div', class_ = ' zm-editable-content clearfix')\

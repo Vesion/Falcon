@@ -146,16 +146,15 @@ class Question(Entry):
                     eids.append(answer['href'])
         return eids
 
-    def follow_me(self, action = 'follow'):
+    def follow_me(self, action = 'follow_question'):
         """ Follow this question. Return status code. """
         data = {
             'params' : json.dumps({
                 'question_id' : self.soup.find('div', id = 'zh-question-detail')['data-resourceid']
                 }),
-            '_xsrf' : self.session.getCookie()['_xsrf']
+            '_xsrf'  : self.session.getCookie()['_xsrf'],
+            'method' : action
             }
-        data['method'] = 'follow_question' if action == 'follow' else\
-                        'unfollow_question'
         rsp = self.session.post(Follow_Question_URL, data)
         if rsp.status_code == requests.codes.ok:
             return SUCCESS
@@ -164,4 +163,4 @@ class Question(Entry):
 
     def unfollow_me(self):
         """ Unfollow this collection. Return status code. """
-        return self.follow_me('unfollow')
+        return self.follow_me('unfollow_question')

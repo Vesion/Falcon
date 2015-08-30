@@ -71,6 +71,10 @@ Get_More_Answers_URL = HOST_URL + "/node/QuestionAnswerListV2"
 Get_Collapsed_Answers_URL = HOST_URL + "/node/QuestionCollapsedAnswerListV2"
 Follow_Question_URL = HOST_URL + "/node/QuestionFollowBaseV2"
 Unfollow_Question_URL = Follow_Question_URL
+### Answer
+Vote_Neutral_Answer_URL = HOST_URL + "/node/AnswerVoteBarV2"
+Vote_Up_Answer_URL = Vote_Neutral_Answer_URL
+Vote_Down_Answer_URL = Vote_Neutral_Answer_URL
 
 #Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'

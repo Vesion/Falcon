@@ -312,16 +312,15 @@ class User(Entry):
         """ Return a [list] of collection eids. """
         return get_all_(self.get_collections)
 
-    def follow_me(self, action = 'follow'):
+    def follow_me(self, action = 'follow_member'):
         """ Follow this user. Return status code. """
         data = {
             'params' : json.dumps({
                 'hash_id' : self.soup.find('button', attrs = {'data-follow' : 'm:button'})['data-id']
                 }),
-            '_xsrf' : self.session.getCookie()['_xsrf']
+            '_xsrf' : self.session.getCookie()['_xsrf'],
+            'method' : action
             }
-        data['method'] = 'follow_member' if action == 'follow' else\
-                        'unfollow_member'
         rsp = self.session.post(Follow_User_URL, data)
         if rsp.status_code == requests.codes.ok:
             return SUCCESS
@@ -330,4 +329,4 @@ class User(Entry):
 
     def unfollow_me(self):
         """ Unfollow this user, Return status code. """
-        return self.follow_me('unfollow')
+        return self.follow_me('unfollow_member')
