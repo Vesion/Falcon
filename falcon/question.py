@@ -145,3 +145,23 @@ class Question(Entry):
                 if answer: # some answers are shielded
                     eids.append(answer['href'])
         return eids
+
+    def follow_me(self, action = 'follow'):
+        """ Follow this question. Return status code. """
+        data = {
+            'params' : json.dumps({
+                'question_id' : self.soup.find('div', id = 'zh-question-detail')['data-resourceid']
+                }),
+            '_xsrf' : self.session.getCookie()['_xsrf']
+            }
+        data['method'] = 'follow_question' if action == 'follow' else\
+                        'unfollow_question'
+        rsp = self.session.post(Follow_Question_URL, data)
+        if rsp.status_code == requests.codes.ok:
+            return SUCCESS
+        else:
+            return FAILURE
+
+    def unfollow_me(self):
+        """ Unfollow this collection. Return status code. """
+        return self.follow_me('unfollow')
