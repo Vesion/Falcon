@@ -25,6 +25,11 @@ class Answer(Entry):
             return author['href']
         return None # for anonymous user
 
+    def get_question(self):
+        """ Return the eid of question where this answer in. """
+        l = self.eid.split('/')
+        return '/{0}/{1}'.format(l[1], l[2])
+
     @return_int
     def get_num_upvotes(self):
         """ Return number of upvotes int.  """
@@ -110,7 +115,7 @@ class Answer(Entry):
         return self.thanks(Not_Helpful_Answer_URL)
 
     def get_content(self):
-        """ Save answer content into local files, only support html currently. """
+        """ Return answer content in pretty soup format. """
         content = self.soup.find('div', class_ = ' zm-editable-content clearfix')
         soup = BeautifulSoup('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"></head><body></body></html>')
         soup.body.append(content)
@@ -125,10 +130,14 @@ class Answer(Entry):
             elif img.has_attr('eeimg'):
                 img['src'] = "http://" + img['src'][2:]
 
+        return soup.prettify()
         content = soup.prettify()
+
+    def save_content(self):
+        """ Save answer content into local files, only support html currently. """
         filename = self.eid.split('/')[-1] + ".html"
         with open(filename, 'wb') as f:
-            f.write(content.encode('utf-8'))
+            f.write(self.get_content().encode('utf-8'))
 
     # TODO #
 
