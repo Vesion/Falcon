@@ -19,7 +19,6 @@ class Entry():
     All of get_* APIs in tool classes are NOT getting an entry,
     but getting text|eid|eidlist|dict, for performance regrading.
     Use that Entry(session, eid) to manually get an entry content indeed
-    API: encode2Character
     Wrapper: getContent, getSoup
     """
 
@@ -46,10 +45,3 @@ class Entry():
     
     def getSoup(self, content):
         return BeautifulSoup(content)
-
-    # encode Chinese characters
-    # discarded!
-    def encode2Character(self, content):
-        if platform.system() == "Windows":
-            content = content.decode('utf-8').encode('gbk')
-        return content

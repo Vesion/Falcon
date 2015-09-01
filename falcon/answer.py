@@ -131,7 +131,6 @@ class Answer(Entry):
                 img['src'] = "http://" + img['src'][2:]
 
         return soup.prettify()
-        content = soup.prettify()
 
     def save_content(self):
         """ Save answer content into local files, only support html currently. """
