@@ -18,8 +18,8 @@ class Question(Entry):
     AnswerSize = 50 # For answers page
     FollowerSize = 20 # For followers page
 
-    def __init__(self, session, url):
-        Entry.__init__(self, session, url)
+    def __init__(self, session, eid):
+        Entry.__init__(self, session, eid)
 
     def get_title(self):
         """ Return question title string. """

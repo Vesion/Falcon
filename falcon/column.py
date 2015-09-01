@@ -13,15 +13,11 @@ from .utils import *
 from .entry import Entry
 
 class Column(Entry):
-    """ Tool class for getting column info """
+    """ Tool class for getting column info. """
 
-    _cHOST_ = "http://zhuanlan.zhihu.com/"
-
-    def __init__(self, session, url):
-        self.session = requests.session()
+    def __init__(self, session, eid):
+        Entry.__init__(self, session, eid)
         self.url = url
-
-        self.soup = BeautifulSoup(self.session.get(Column._cHOST_ + self.url).content)
 
     def get_title(self):
         title = self.soup.find('div', class_ = 'title ng-binding')\

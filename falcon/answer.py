@@ -15,8 +15,8 @@ from .entry import Entry
 class Answer(Entry):
     """ Tool class for getting answer info. """
 
-    def __init__(self, session, url):
-        Entry.__init__(self, session, url)
+    def __init__(self, session, eid):
+        Entry.__init__(self, session, eid)
 
     def get_author(self):
         """ Return author eid or None. """

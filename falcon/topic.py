@@ -15,8 +15,8 @@ from .entry import Entry
 class Topic(Entry):
     """ Tool class for getting topic info. """
 
-    def __init__(self, session, url):
-        Entry.__init__(self, session, url)
+    def __init__(self, session, eid):
+        Entry.__init__(self, session, eid)
 
     def get_name(self):
         """ Return topic name string. """

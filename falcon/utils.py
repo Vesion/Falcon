@@ -79,8 +79,8 @@ Thanks_Answer_URL = HOST_URL + "/answer/thanks"
 Cancel_Thanks_Answer_URL = HOST_URL + "/answer/cancel_thanks"
 Helpful_Answer_URL = HOST_URL + "/answer/helpful"
 Not_Helpful_Answer_URL = HOST_URL + "/answer/not_helpful"
-
-#Column_URL = "http://zhuanlan.zhihu.com"
+#### Column
+Column_URL = "http://zhuanlan.zhihu.com"
 #Columns_Data = Column_URL + '/api/columns/{0}'
 #Columns_Posts_Data = Column_URL + '/api/columns/{0}/posts?limit=10&offset={1}'
 #Columns_Post_Data = Column_URL + '/api/columns/{0}/posts/{1}'
