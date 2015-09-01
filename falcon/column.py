@@ -10,18 +10,25 @@
 # -*- coding: utf-8 -*-
 
 from .utils import *
-from .entry import Entry
 
-class Column(Entry):
+class Column():
     """ Tool class for getting column info. """
 
+    @check_eid
     def __init__(self, session, eid):
-        Entry.__init__(self, session, eid)
-        self.url = url
 
-    def get_title(self):
-        title = self.soup.find('div', class_ = 'title ng-binding')\
-                        .string.encode('utf-8').strip('\n')
-        return self.encode2Character(title)
+        self.session = session
+        self.__zhost = self.session.getHeader()['host']
+        self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
 
-    #def get_num_followers(self):
+        self.eid = eid
+        self.url = Column_URL + self.eid
+
+        self.json = self.session.get(Columns_Json_URL + self.eid).json()
+
+    def get_name(self):
+        return self.json['name']
+
+    def __del__(self):
+        self.session.setHeader({'host' : self.__zhost})
+        print 'del column obj'
