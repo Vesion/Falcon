@@ -82,8 +82,6 @@ Not_Helpful_Answer_URL = HOST_URL + "/answer/not_helpful"
 #### Column
 Column_URL = "http://zhuanlan.zhihu.com"
 Columns_Json_URL = Column_URL + '/api/columns'
-#Columns_Posts_Data = Column_URL + '/api/columns/{0}/posts?limit=10&offset={1}'
-#Columns_Post_Data = Column_URL + '/api/columns/{0}/posts/{1}'
 
 ## REs
 Eid_RE = re.compile(r"^(/[^/]+)*$")
