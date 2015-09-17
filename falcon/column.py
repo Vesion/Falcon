@@ -19,12 +19,19 @@ class Column():
 
         self.session = session
         self.__zhost = self.session.getHeader()['host']
-        self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
 
         self.eid = eid
         self.url = Column_URL + self.eid
 
+    def __enter__(self):
+        print "enter column"
+        self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
         self.json = self.session.get(Columns_Json_URL + self.eid).json()
+        return self
+
+    def __exit__(self, *args):
+        print "exit column"
+        self.session.setHeader({'host' : self.__zhost})
 
     def get_name(self):
         return self.json['name']
@@ -51,6 +58,30 @@ class Column():
     def get_all_posts(self):
         return get_all_(self.get_posts)
 
-    def __del__(self):
+
+class Post():
+    """ Tool class for getting column post info. """
+
+    @check_eid
+    def __init__(self, session, eid):
+
+        self.session = session
+        self.__zhost = self.session.getHeader()['host']
+        self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
+
+        self.eid = eid
+        self.url = Column_URL + self.eid
+
+    def __enter__(self):
+        print "enter post"
+        self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
+        self.json = self.session.get(Columns_Json_URL + 
+                "/{0}/posts/{1}".format(self.eid.split('/')[1], self.eid.split('/')[2])).json()
+        return self
+
+    def __exit__(self, *args):
+        print "exit post"
         self.session.setHeader({'host' : self.__zhost})
-        print 'del column obj'
+
+    def get_title(self):
+        return self.json['title']

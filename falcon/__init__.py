@@ -25,4 +25,4 @@ from .question import Question
 from .topic import Topic
 from .user import User
 from .collection import Collection
-from .column import Column
+from .column import Column, Post
