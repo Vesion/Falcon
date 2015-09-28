@@ -24,13 +24,11 @@ class Column():
         self.url = Column_URL + self.eid
 
     def __enter__(self):
-        print "enter column"
         self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
         self.json = self.session.get(Columns_Json_URL + self.eid).json()
         return self
 
     def __exit__(self, *args):
-        print "exit column"
         self.session.setHeader({'host' : self.__zhost})
 
     def get_name(self):
@@ -73,14 +71,12 @@ class Post():
         self.url = Column_URL + self.eid
 
     def __enter__(self):
-        print "enter post"
         self.session.setHeader({'host' : "zhuanlan.zhihu.com"})
         self.json = self.session.get(Columns_Json_URL + 
                 "/{0}/posts/{1}".format(self.eid.split('/')[1], self.eid.split('/')[2])).json()
         return self
 
     def __exit__(self, *args):
-        print "exit post"
         self.session.setHeader({'host' : self.__zhost})
 
     def get_title(self):
